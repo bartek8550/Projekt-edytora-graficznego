@@ -26,7 +26,6 @@ namespace Projekt_edytora_graficznego
         {
             InitializeComponent();
             SeriesCollection = new SeriesCollection();
-            Chart.Series = SeriesCollection;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
@@ -38,14 +37,17 @@ namespace Projekt_edytora_graficznego
             {
                 values.Add(value);
             }
-
+            this.Chart.Background = new SolidColorBrush(Colors.Black);
             var columnSeries = new ColumnSeries
             {
-                Title = "Histogram",
-                Values = values
+                ColumnPadding = 0,
+                Values = values,
+                Fill = new SolidColorBrush(Colors.White),
+                
             };
 
             SeriesCollection.Add(columnSeries);
+            Chart.Series = SeriesCollection;
         }
     }
 }

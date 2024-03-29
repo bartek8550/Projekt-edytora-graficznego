@@ -41,11 +41,7 @@ namespace Projekt_edytora_graficznego
 
         private void ImageWindow_Activated(object? sender, EventArgs e)
         {
-            MainWindow.LastImage = this;
-            MainWindow.ActualImage = (BitmapSource)Image.Source;
-            
+            MainWindow.LastImage = this;            
         }
-
-
     }
 }

@@ -83,11 +83,9 @@ namespace Projekt_edytora_graficznego
 
         private void HistogramGraficzny_Click(object sender, RoutedEventArgs e)
         {
-            if (ActualImage != null)
+            if (LastImage.MatImage != null)
             {
-                Bitmap bitmap = BitmapSourceToBitmap(ActualImage);
-                
-                Mat image = BitmapToMat(bitmap);
+                Mat image = LastImage.MatImage;
 
                 if (image.NumberOfChannels != 1)
                 {
@@ -107,6 +105,9 @@ namespace Projekt_edytora_graficznego
                 HistogramWindow histogramWindow = new HistogramWindow();
                 histogramWindow.PrepareChartData(histogram);
                 histogramWindow.Show();
+            }
+            else {
+                MessageBox.Show("Nie wybrano obrazka");
             }
         }
 
