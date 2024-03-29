@@ -124,8 +124,22 @@ namespace Projekt_edytora_graficznego
             }
             else 
             {
-
                 MessageBox.Show("Nie wybrano obrazka");
+            }
+        }
+
+        private void RGBToGray_Click(object sender, RoutedEventArgs e)
+        {
+            if (LastImage.MatImage.NumberOfChannels == 1)
+            {
+                MessageBox.Show("Obraz jest w odcieniach szarości, możesz wykonać operacje jedynie dla obrazu kolorowego. Po co zmieniać obraz czarnobiały na czarnobiały ;)");
+                return;
+            }
+            else 
+            {
+                Mat grayMat = LastImage.MatImage.ToImage<Gray, byte>().Mat;
+                LastImage.MatImage = grayMat;
+                LastImage.DisplayImage();
             }
         }
 
@@ -233,6 +247,7 @@ namespace Projekt_edytora_graficznego
             }
         }
 
+        
     }
 
 }
