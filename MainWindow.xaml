@@ -6,7 +6,20 @@
         xmlns:local="clr-namespace:Projekt_edytora_graficznego"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <Menu MaxHeight="25" Background="#FFA9D1F4">
+                <MenuItem Header="Lab1">
+                    <MenuItem x:Name="Szarocieniowe" Header="Wczytaj obraz szarocieniowy" Click="Szarocieniowe_Click"/>
+                    <MenuItem x:Name="Kolorowe" Header="Wczytaj obraz kolorowy" Click="Kolorowe_Click"/>
+                    <MenuItem x:Name="HistogramGraficzny" Header="Otwórz Histogram w trybie graficznym" Click="HistogramGraficzny_Click"/>
+                </MenuItem>
+            </Menu>
+            <Menu MaxHeight="25" Background="#FFA9D1F4">
+                <MenuItem Header="Lab2">
+                
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+    </DockPanel>
 </Window>
