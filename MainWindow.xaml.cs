@@ -36,7 +36,6 @@ namespace Projekt_edytora_graficznego
         }
 
         public static ImageWindow? LastImage { get; set; }
-        public static BitmapSource? ActualImage { get; set; }
 
         #region Clicki
         private void Szarocieniowe_Click(object sender, RoutedEventArgs e)
@@ -126,10 +125,9 @@ namespace Projekt_edytora_graficznego
 
         private void OpenColorScale(string path)
         {
-            BitmapSource bitmapSourceGray = ToColor(path);
+            Mat MatColor = ToColor(path);
 
-            ImageWindow imageWindow = new ImageWindow(Mat mat);
-            imageWindow.DisplayImage(bitmapSourceGray);
+            ImageWindow imageWindow = new ImageWindow(MatColor);
             imageWindow.Title = path;
             imageWindow.Show();
         }
@@ -140,13 +138,10 @@ namespace Projekt_edytora_graficznego
             return oryginal;
         }
 
-        public static BitmapSource ToColor(string path)
+        public Mat ToColor(string path)
         {
             Mat oryginal = CvInvoke.Imread(path, ImreadModes.Color);
-
-            BitmapSource bitmapSource = BitmapSourceExtension.ToBitmapSource(oryginal);
-
-            return bitmapSource;
+            return oryginal;
         }
 
         #endregion

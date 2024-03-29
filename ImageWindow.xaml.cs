@@ -30,16 +30,13 @@ namespace Projekt_edytora_graficznego
             InitializeComponent();
             this.Activated += ImageWindow_Activated;
             MatImage = mat;
-        }
-        public void DisplayImage(BitmapSource image) 
-        {
-            Image.Source = image;
+            DisplayImage();
         }
 
-        public void DisplayImage(Mat image)
+        public void DisplayImage()
         {
-            BitmapSource aha = BitmapSourceExtension.ToBitmapSource(image);
-            Image.Source = aha;
+            BitmapSource image = BitmapSourceExtension.ToBitmapSource(MatImage);
+            Image.Source = image;
         }
 
         private void ImageWindow_Activated(object? sender, EventArgs e)
