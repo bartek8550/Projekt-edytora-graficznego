@@ -22,6 +22,7 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Rectangle = System.Drawing.Rectangle;
 using Point = System.Drawing.Point;
 using System.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Projekt_edytora_graficznego
 {
@@ -111,6 +112,24 @@ namespace Projekt_edytora_graficznego
             }
         }
 
+        private void HistogramTabela_Click(object sender, RoutedEventArgs e)
+        {
+            if (LastImage.MatImage != null)
+            {
+                int[] histogram = CalculateHistogram(LastImage.MatImage);
+                HistogramWindow histogramWindow = new HistogramWindow();
+                histogramWindow.PrepareHistogramTable(histogram);
+                histogramWindow.Show();
+
+            }
+            else 
+            {
+
+                MessageBox.Show("Nie wybrano obrazka");
+            }
+        }
+
+
 
         #endregion
 
@@ -143,6 +162,18 @@ namespace Projekt_edytora_graficznego
         {
             Mat oryginal = CvInvoke.Imread(path, ImreadModes.Color);
             return oryginal;
+        }
+
+        public int[] CalculateHistogram(Mat image) {
+            int[] histogram = new int[256];
+            byte[] bytes = new byte[image.Rows * image.Cols * image.ElementSize];
+            System.Runtime.InteropServices.Marshal.Copy(image.DataPointer, bytes, 0, bytes.Length);
+
+            foreach (byte value in bytes)
+            {
+                histogram[value]++;
+            }
+            return histogram;
         }
 
         #endregion
@@ -201,6 +232,7 @@ namespace Projekt_edytora_graficznego
                     return 0;
             }
         }
+
     }
 
 }

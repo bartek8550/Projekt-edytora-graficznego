@@ -9,5 +9,9 @@
         Title="HistogramWindow" Height="450" Width="800">
     <Grid>
         <lvc:CartesianChart x:Name="Chart"></lvc:CartesianChart>
+        <DataGrid x:Name="histogramDataGrid"
+                  AutoGenerateColumns="True"
+                  Margin="10"
+                  IsReadOnly="True"/>
     </Grid>
 </Window>

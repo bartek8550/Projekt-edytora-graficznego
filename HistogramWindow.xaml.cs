@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Diagnostics.Metrics;
 
 namespace Projekt_edytora_graficznego
 {
@@ -22,16 +23,18 @@ namespace Projekt_edytora_graficznego
     /// </summary>
     public partial class HistogramWindow : Window
     {
+        public SeriesCollection SeriesCollection { get; set; }
+
         public HistogramWindow()
         {
             InitializeComponent();
             SeriesCollection = new SeriesCollection();
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-
         public void PrepareChartData(int[] histogram)
         {
+            histogramDataGrid.Visibility = Visibility.Collapsed;
+            Chart.Visibility = Visibility.Visible;
             var values = new ChartValues<int>();
             foreach (var value in histogram)
             {
@@ -48,6 +51,24 @@ namespace Projekt_edytora_graficznego
 
             SeriesCollection.Add(columnSeries);
             Chart.Series = SeriesCollection;
+        }
+
+        public class HisData {
+            public int wartosc { get; set; }
+            public int iloscZliczen { get; set; }
+        }
+
+        public void PrepareHistogramTable(int[] histogram) {
+            Chart.Visibility = Visibility.Collapsed;
+            histogramDataGrid.Visibility = Visibility.Visible;
+
+            var dataList = new List<HisData>();
+            for (int i = 0; i < histogram.Length; ++i)
+            {
+                dataList.Add(new HisData {wartosc = i, iloscZliczen = histogram[i] });
+            }
+
+            histogramDataGrid.ItemsSource = dataList;
         }
     }
 }

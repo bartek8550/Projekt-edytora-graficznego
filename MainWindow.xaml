@@ -13,6 +13,7 @@
                     <MenuItem x:Name="Szarocieniowe" Header="Wczytaj obraz szarocieniowy" Click="Szarocieniowe_Click"/>
                     <MenuItem x:Name="Kolorowe" Header="Wczytaj obraz kolorowy" Click="Kolorowe_Click"/>
                     <MenuItem x:Name="HistogramGraficzny" Header="Otwórz Histogram w trybie graficznym" Click="HistogramGraficzny_Click"/>
+                    <MenuItem x:Name="HistogramTabela" Header="Otwórz Histogram w tabeli" Click="HistogramTabela_Click" />
                 </MenuItem>
             </Menu>
             <Menu MaxHeight="25" Background="#FFA9D1F4">
