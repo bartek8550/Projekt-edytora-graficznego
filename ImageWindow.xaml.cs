@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Emgu.CV;
 using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
+using static Projekt_edytora_graficznego.HistogramWindow;
 
 namespace Projekt_edytora_graficznego
 {
@@ -24,7 +25,6 @@ namespace Projekt_edytora_graficznego
     public partial class ImageWindow : Window
     {
         public Mat MatImage { get; set; }
-        
         public ImageWindow(Mat mat)
         {
             InitializeComponent();
@@ -41,7 +41,8 @@ namespace Projekt_edytora_graficznego
 
         private void ImageWindow_Activated(object? sender, EventArgs e)
         {
-            MainWindow.LastImage = this;            
+            MainWindow.LastImage = this;
         }
+
     }
 }

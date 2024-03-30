@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics.Metrics;
 using System.Globalization;
+using Emgu.CV;
 
 namespace Projekt_edytora_graficznego
 {
@@ -25,7 +26,6 @@ namespace Projekt_edytora_graficznego
     public partial class HistogramWindow : Window
     {
         public SeriesCollection SeriesCollection { get; set; }
-
         public HistogramWindow()
         {
             InitializeComponent();

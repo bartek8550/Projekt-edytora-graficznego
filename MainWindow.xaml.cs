@@ -98,6 +98,7 @@ namespace Projekt_edytora_graficznego
                 HistogramWindow histogramWindow = new HistogramWindow();
                 histogramWindow.PrepareChartData(histogram);
                 histogramWindow.Show();
+
             }
             else {
                 MessageBox.Show("Nie wybrano obrazka");
