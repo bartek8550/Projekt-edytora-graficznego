@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics.Metrics;
+using System.Globalization;
 
 namespace Projekt_edytora_graficznego
 {
@@ -56,16 +57,21 @@ namespace Projekt_edytora_graficznego
         public class HisData {
             public int wartosc { get; set; }
             public int iloscZliczen { get; set; }
+            public string normalizacja { get; set; }
         }
 
-        public void PrepareHistogramTable(int[] histogram) {
+        public void PrepareHistogramTable(int[] histogram, double[] normalizedHistogram) {
             Chart.Visibility = Visibility.Collapsed;
             histogramDataGrid.Visibility = Visibility.Visible;
 
             var dataList = new List<HisData>();
             for (int i = 0; i < histogram.Length; ++i)
             {
-                dataList.Add(new HisData {wartosc = i, iloscZliczen = histogram[i] });
+                dataList.Add(new HisData {
+                    wartosc = i, 
+                    iloscZliczen = histogram[i], 
+                    normalizacja = normalizedHistogram[i].ToString("F6", CultureInfo.InvariantCulture)
+                });
             }
 
             histogramDataGrid.ItemsSource = dataList;

@@ -10,11 +10,20 @@
         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Menu MaxHeight="25" Background="#FFA9D1F4">
                 <MenuItem Header="Lab1">
-                    <MenuItem x:Name="Szarocieniowe" Header="Wczytaj obraz szarocieniowy" Click="Szarocieniowe_Click"/>
-                    <MenuItem x:Name="Kolorowe" Header="Wczytaj obraz kolorowy" Click="Kolorowe_Click"/>
-                    <MenuItem x:Name="HistogramGraficzny" Header="Otwórz Histogram w trybie graficznym" Click="HistogramGraficzny_Click"/>
-                    <MenuItem x:Name="HistogramTabela" Header="Otwórz Histogram w tabeli" Click="HistogramTabela_Click" />
-                    <MenuItem x:Name="RGBToGray" Header="RGBToGray" Click="RGBToGray_Click"/>
+                    <MenuItem Header="Obrazy szarocieniowe">
+                        <MenuItem x:Name="Szarocieniowe" Header="Wczytaj obraz szarocieniowy" Click="Szarocieniowe_Click"/>
+                        <MenuItem x:Name="HistogramGraficznySzarocieniowy" Header="Otwórz Histogram w trybie graficznym" Click="HistogramGraficzny_Click"/>
+                        <MenuItem x:Name="HistogramTabelaSzarocieniowy" Header="Otwórz Histogram w tabeli" Click="HistogramTabela_Click" />
+                        <MenuItem x:Name="HistogramEqualizacja" Header="Equalizacja histogramu" Click="HistogramEqualizacja_Click" />
+                        <MenuItem x:Name="HistogramRozciaganie" Header="Rozciąganie histogramu" Click="HistogramRozciaganie_Click" />
+                    </MenuItem>
+                    <MenuItem Header="Obrazy kolorowe">
+                        <MenuItem x:Name="Kolorowe" Header="Wczytaj obraz kolorowy" Click="Kolorowe_Click"/>
+                        <MenuItem x:Name="RGBToGray" Header="Konwertuj RGB do skali szarości" Click="RGBToGray_Click"/>
+                        <MenuItem x:Name="RGBTo3xGray" Header="Rozdziel RGB na 3xGray" Click="RGBTo3xGray_Click"/>
+                        <MenuItem x:Name="RGBToHSV" Header="Przekonwertuj RGB -> HSV" Click="RGBToHSV_Click"/>
+                        <MenuItem x:Name="RGBToLab" Header="Przekonwertuj RGB -> Lab" Click="RGBToLab_Click"/>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
             <Menu MaxHeight="25" Background="#FFA9D1F4">
