@@ -29,13 +29,11 @@ namespace Projekt_edytora_graficznego
         public HistogramWindow()
         {
             InitializeComponent();
-            SeriesCollection = new SeriesCollection();
+            
         }
 
         public void PrepareChartData(int[] histogram)
-        {
-            histogramDataGrid.Visibility = Visibility.Collapsed;
-            Chart.Visibility = Visibility.Visible;
+        {        
             var values = new ChartValues<int>();
             foreach (var value in histogram)
             {
@@ -49,8 +47,10 @@ namespace Projekt_edytora_graficznego
                 Fill = new SolidColorBrush(Colors.White),
                 
             };
-
-            SeriesCollection.Add(columnSeries);
+            var SeriesCollection = new SeriesCollection
+            {
+                columnSeries
+            };
             Chart.Series = SeriesCollection;
         }
 
@@ -61,9 +61,6 @@ namespace Projekt_edytora_graficznego
         }
 
         public void PrepareHistogramTable(int[] histogram, double[] normalizedHistogram) {
-            Chart.Visibility = Visibility.Collapsed;
-            histogramDataGrid.Visibility = Visibility.Visible;
-
             var dataList = new List<HisData>();
             for (int i = 0; i < histogram.Length; ++i)
             {
@@ -75,6 +72,6 @@ namespace Projekt_edytora_graficznego
             }
 
             histogramDataGrid.ItemsSource = dataList;
-        }
+        }  
     }
 }

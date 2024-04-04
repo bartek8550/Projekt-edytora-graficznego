@@ -94,29 +94,12 @@ namespace Projekt_edytora_graficznego
                     return;
                 }
 
-                var (histogram, normalizedHistogram) = CalculateHistogram(image);
-                HistogramWindow histogramWindow = new HistogramWindow();
-                histogramWindow.PrepareChartData(histogram);
-                histogramWindow.Show();
+                
+                LastImage.ShowHis();
+
 
             }
             else {
-                MessageBox.Show("Nie wybrano obrazka");
-            }
-        }
-
-        private void HistogramTabela_Click(object sender, RoutedEventArgs e)
-        {
-            if (LastImage.MatImage != null)
-            {
-                var (histogram, normalizedHistogram) = CalculateHistogram(LastImage.MatImage);
-                HistogramWindow histogramWindow = new HistogramWindow();
-                histogramWindow.PrepareHistogramTable(histogram, normalizedHistogram);
-                histogramWindow.Show();
-
-            }
-            else 
-            {
                 MessageBox.Show("Nie wybrano obrazka");
             }
         }
@@ -210,7 +193,7 @@ namespace Projekt_edytora_graficznego
 
         private void HistogramRozciaganie_Click(object sender, RoutedEventArgs e)
         {
-            Mat image = LastImage.MatImage; // Załóżmy, że to jest obraz szarocieniowy
+            Mat image = LastImage.MatImage;
             if (image.NumberOfChannels != 1)
             {
                 MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
@@ -218,39 +201,40 @@ namespace Projekt_edytora_graficznego
             }
 
             Image<Gray, byte> grayImage = image.ToImage<Gray, byte>();
-            byte min = 255, max = 0;
+            byte Lmin = 0, Lmax = 255, min = 255, max = 0;
 
             // Znajdowanie minimalnej i maksymalnej wartości intensywności
-            for (int y = 0; y < grayImage.Height; y++)
+            for (int y = 0; y < grayImage.Height; ++y)
             {
-                for (int x = 0; x < grayImage.Width; x++)
+                for (int x = 0; x < grayImage.Width; ++x)
                 {
-                    byte pixelValue = grayImage.Data[y, x, 0];
-                    if (pixelValue < min) min = pixelValue;
-                    if (pixelValue > max) max = pixelValue;
+                    byte pixel = grayImage.Data[y, x, 0];
+                    if(pixel < min) min = pixel;
+                    if(pixel > max) max = pixel;
                 }
             }
 
-            // Sprawdzenie czy obraz już nie jest rozciągnięty
-            if (min == max)
-            {
-                MessageBox.Show("Wszystkie piksele mają tę samą wartość.");
-                return;
-            }
-
-            // Rozciąganie histogramu
-            for (int y = 0; y < grayImage.Height; y++)
-            {
-                for (int x = 0; x < grayImage.Width; x++)
-                {
-                    grayImage.Data[y, x, 0] = (byte)((grayImage.Data[y, x, 0] - min) * (255 / (max - min)));
+            // Wykonywanie rozciągania histogramu
+            for (int y = 0; y < grayImage.Height; ++y) {
+                for (int x = 0; x < grayImage.Width; ++x){
+                    byte pixel = grayImage.Data[y, x, 0];
+                    if (pixel < min)
+                    {
+                        grayImage.Data[y, x, 0] = Lmin;
+                    }
+                    else if (pixel > max)
+                    {
+                        grayImage.Data[y, x, 0] = Lmax;
+                    }
+                    else
+                    {
+                        grayImage.Data[y, x, 0] = (byte)(((pixel - min) * Lmax) / (max - min));
+                    }
                 }
             }
-
-            // Konwersja z powrotem na Mat do wyświetlenia
+                
             Mat stretchedImage = grayImage.Mat;
-            LastImage.MatImage = stretchedImage;
-            LastImage.DisplayImage();
+            LastImage.UpdateImageAndHistogram(stretchedImage);
 
         }
 
@@ -292,30 +276,6 @@ namespace Projekt_edytora_graficznego
         {
             Mat oryginal = CvInvoke.Imread(path, ImreadModes.Color);
             return oryginal;
-        }
-
-        public (int[], double[]) CalculateHistogram(Mat image)
-        {
-            int[] histogram = new int[256];
-            double[] normalizedHistogram = new double[256];
-            byte[] bytes = new byte[image.Rows * image.Cols];
-            System.Runtime.InteropServices.Marshal.Copy(image.DataPointer, bytes, 0, bytes.Length);
-
-            // Obliczanie histogramu
-            foreach (byte value in bytes)
-            {
-                histogram[value]++;
-            }
-
-            int totalPixels = image.Rows * image.Cols;
-
-            // Normalizacja histogramu względem maksymalnej liczby zliczeń
-            for (int i = 0; i < histogram.Length; i++)
-            {
-                normalizedHistogram[i] = Math.Round((double)histogram[i] / totalPixels, 6); ;
-            }
-
-            return (histogram, normalizedHistogram);
         }
 
         public Mat BitmapToMat(Bitmap bitmap)

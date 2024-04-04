@@ -13,7 +13,6 @@
                     <MenuItem Header="Obrazy szarocieniowe">
                         <MenuItem x:Name="Szarocieniowe" Header="Wczytaj obraz szarocieniowy" Click="Szarocieniowe_Click"/>
                         <MenuItem x:Name="HistogramGraficznySzarocieniowy" Header="Otwórz Histogram w trybie graficznym" Click="HistogramGraficzny_Click"/>
-                        <MenuItem x:Name="HistogramTabelaSzarocieniowy" Header="Otwórz Histogram w tabeli" Click="HistogramTabela_Click" />
                         <MenuItem x:Name="HistogramEqualizacja" Header="Equalizacja histogramu" Click="HistogramEqualizacja_Click" />
                         <MenuItem x:Name="HistogramRozciaganie" Header="Rozciąganie histogramu" Click="HistogramRozciaganie_Click" />
                     </MenuItem>

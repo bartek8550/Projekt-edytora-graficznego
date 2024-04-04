@@ -8,10 +8,16 @@
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         Title="HistogramWindow" Height="450" Width="800">
     <Grid>
-        <lvc:CartesianChart x:Name="Chart"></lvc:CartesianChart>
-        <DataGrid x:Name="histogramDataGrid"
-                  AutoGenerateColumns="True"
-                  Margin="10"
-                  IsReadOnly="True"/>
+        <TabControl>
+            <TabItem Header="Wykres">
+                <lvc:CartesianChart x:Name="Chart"></lvc:CartesianChart>
+            </TabItem>
+            <TabItem Header="Tabela">
+                <DataGrid x:Name="histogramDataGrid"
+                            AutoGenerateColumns="True"
+                            Margin="10"
+                            IsReadOnly="True"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
