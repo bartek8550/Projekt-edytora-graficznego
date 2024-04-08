@@ -23,6 +23,7 @@ using Rectangle = System.Drawing.Rectangle;
 using Point = System.Drawing.Point;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
+using Emgu.CV.Reg;
 
 namespace Projekt_edytora_graficznego
 {
@@ -82,7 +83,7 @@ namespace Projekt_edytora_graficznego
             }
         }
 
-        private void HistogramGraficzny_Click(object sender, RoutedEventArgs e)
+        private void Histogram_Click(object sender, RoutedEventArgs e)
         {
             if (LastImage.MatImage != null)
             {
@@ -93,11 +94,7 @@ namespace Projekt_edytora_graficznego
                     MessageBox.Show("Obraz nie jest szarocieniowy");
                     return;
                 }
-
-                
                 LastImage.ShowHis();
-
-
             }
             else {
                 MessageBox.Show("Nie wybrano obrazka");
@@ -194,6 +191,7 @@ namespace Projekt_edytora_graficznego
         private void HistogramRozciaganie_Click(object sender, RoutedEventArgs e)
         {
             Mat image = LastImage.MatImage;
+            
             if (image.NumberOfChannels != 1)
             {
                 MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
@@ -233,17 +231,65 @@ namespace Projekt_edytora_graficznego
                 }
             }
                 
-            Mat stretchedImage = grayImage.Mat;
+            Mat stretchedImage = grayImage.Mat;          
             LastImage.UpdateImageAndHistogram(stretchedImage);
-
         }
 
         private void HistogramEqualizacja_Click(object sender, RoutedEventArgs e)
         {
+            Mat image = LastImage.MatImage;
+
+            var (histogram, normalizedHistogram) = LastImage.CalculateHistogram();
+            int pixels = image.Width * image.Height;
+            int sumask = 0;
+
+            float skala = 255.0f / pixels;
+
+            byte[] tab = new byte[256];
+            for (int i = 0; i < 256; ++i) {
+                sumask += histogram[i];
+                tab[i] = (byte) (sumask * skala);
+            }
+
+            Image<Gray, byte> image2 = image.ToImage<Gray, byte>();
+            for (int y = 0; y < image2.Height; ++y)
+            {
+                for (int x = 0; x < image2.Width; ++x)
+                {
+                    byte pix = image2.Data[y, x, 0];
+                    image2.Data[y, x, 0] = tab[pix];
+                }
+            }
+            Mat equaliImage = image2.Mat;
+            LastImage.UpdateImageAndHistogram(equaliImage);
 
         }
 
-        
+        private void Negacja_Click(object sender, RoutedEventArgs e) 
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            Image<Gray, byte> image2 = image.ToImage<Gray, byte>();
+
+            for (int y = 0; y < image2.Height; ++y)
+            {
+                for (int x = 0; x < image2.Width; ++x)
+                {
+                    byte pix = image2.Data[y, x, 0];
+                    image2.Data[y, x, 0] = (byte)(255 - pix);
+                }
+            }
+
+            Mat negatedImage = image2.Mat;
+            LastImage.UpdateImageAndHistogram(negatedImage);
+        }
+
+
 
         #endregion
 
@@ -283,6 +329,40 @@ namespace Projekt_edytora_graficznego
             Mat imagemat = BitmapExtension.ToMat(bitmap);
 
             return imagemat;
+        }
+
+        public Mat RozciaganieSel(int p1, int p2, int q3, int q4) 
+        {
+            Mat image = LastImage.MatImage;
+            Image<Gray, byte> image2 = image.ToImage<Gray, byte>();
+            byte minV = 255;
+            byte maxV = 0;
+            
+            for (int y = 0; y < image2.Height; ++y) {
+                for (int x = 0; x < image2.Width; ++x) {
+                    byte pix = image2.Data[y, x, 0];
+                    if (pix >= p1 && pix <= p2) {
+                        if(pix < minV) minV = pix;
+                        if(pix > maxV) maxV = pix;
+                    }
+                }
+            }
+
+            for (int y = 0; y < image2.Height; ++y)
+            {
+                for (int x = 0; x < image2.Width; ++x)
+                {
+                    double pix = image2.Data[y, x, 0];
+                    if (pix >= p1 && pix <= p2)
+                    {
+                        byte newPix = (byte)Math.Round(((pix - minV) / (maxV - minV)) * (q4 - q3) + q3);
+                        image2.Data[y, x, 0] = newPix;
+                    }
+                }
+            }
+
+            Mat rozciagnietyMat = image2.Mat;
+            return rozciagnietyMat;            
         }
 
 

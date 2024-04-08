@@ -40,7 +40,7 @@ namespace Projekt_edytora_graficznego
         {
             MatImage = image;
             DisplayImage();
-            ShowHis();
+            UpdateHis();
         }
 
         public void DisplayImage()
@@ -84,6 +84,16 @@ namespace Projekt_edytora_graficznego
             HistogramWindow.Show();
         }
 
+        public void UpdateHis() 
+        {
+            if (HistogramWindow == null) return;
+            
+            var (histogram, normalizedHistogram) = CalculateHistogram();
+            HistogramWindow.PrepareChartData(histogram);
+            HistogramWindow.PrepareHistogramTable(histogram, normalizedHistogram);
+            
+        }
+
         private void ImageWindow_Activated(object? sender, EventArgs e)
         {
             MainWindow.LastImage = this;
@@ -92,7 +102,9 @@ namespace Projekt_edytora_graficznego
         private void ImageWindow_Closing(object? sender, EventArgs e)
         {
             MainWindow.LastImage = null;
-            HistogramWindow.Close();
+            if (HistogramWindow != null) {
+                HistogramWindow.Close();
+            }
         }
 
 
