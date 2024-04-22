@@ -40,6 +40,8 @@ namespace Projekt_edytora_graficznego
         public static ImageWindow? LastImage { get; set; }
 
         #region Clicki
+
+        #region lab1
         private void Szarocieniowe_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
@@ -289,11 +291,53 @@ namespace Projekt_edytora_graficznego
             LastImage.UpdateImageAndHistogram(negatedImage);
         }
 
+        private void HistogramRozciaganieZakresu_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            SelekcjaRoz selekcjaRoz = new SelekcjaRoz();
+            if(selekcjaRoz.ShowDialog() == true) {
+                Mat rozciagnieteSel = RozciaganieSel(selekcjaRoz.p1Value, selekcjaRoz.p2Value, selekcjaRoz.q3Value, selekcjaRoz.q4Value);
+                LastImage.UpdateImageAndHistogram(rozciagnieteSel);
+            }
+        }
+        #endregion lab1
+
+        #region lab2
+        private void Posteryzuj_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            Posteryzacja pos = new Posteryzacja();
+            if (pos.ShowDialog() == true)
+            {
+                Mat post = Posteryzuj(image, pos.lvl);
+                LastImage.UpdateImageAndHistogram(post);
+            }
+        }
 
 
-        #endregion
+
+        #endregion lab2
+
+
+        #endregion Clicki
 
         #region Metody
+
+        #region lab1
         private void OpenGrayScale(string path) 
         {
             Mat MatGray = ToGray(path);
@@ -364,11 +408,32 @@ namespace Projekt_edytora_graficznego
             Mat rozciagnietyMat = image2.Mat;
             return rozciagnietyMat;            
         }
+        #endregion lab1
 
+        #region lab2
+        public Mat Posteryzuj(Mat mat, int poziomySzarosci) 
+        {
+            Mat image = mat;
+
+            Image<Gray, byte> image2 = image.ToImage<Gray, byte>();
+            float step = 255f / (poziomySzarosci - 1);
+            
+            for (int y = 0; y < image2.Height; ++y)
+            {
+                for (int x = 0; x < image2.Width; ++x)
+                {
+                    byte pix = image2.Data[y, x, 0];
+                    byte posteryzePix = (byte)((Math.Round(pix/step)) * step);
+                    image2.Data[y, x, 0] = posteryzePix;
+                }
+            }
+            return image2.Mat;
+        }
+
+        #endregion lab2
 
         #endregion
 
-        
     }
 
 }

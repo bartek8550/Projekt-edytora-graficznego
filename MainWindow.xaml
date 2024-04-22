@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_edytora_graficznego"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="40">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Menu MaxHeight="25" Background="#FFA9D1F4">
@@ -16,6 +16,7 @@
                         <MenuItem x:Name="HistogramEqualizacja" Header="Equalizacja histogramu" Click="HistogramEqualizacja_Click" />
                         <MenuItem x:Name="HistogramRozciaganie" Header="Rozciąganie histogramu" Click="HistogramRozciaganie_Click" />
                         <MenuItem x:Name="Negacja" Header="Negacja" Click="Negacja_Click" />
+                        <MenuItem x:Name="HistogramRozciaganieZakresu" Header="Rozciąganie histogramu o podanym zakresie" Click="HistogramRozciaganieZakresu_Click" />
                     </MenuItem>
                     <MenuItem Header="Obrazy kolorowe">
                         <MenuItem x:Name="Kolorowe" Header="Wczytaj obraz kolorowy" Click="Kolorowe_Click"/>
@@ -28,7 +29,9 @@
             </Menu>
             <Menu MaxHeight="25" Background="#FFA9D1F4">
                 <MenuItem Header="Lab2">
-                
+                    <MenuItem Header="Obrazy szarocieniowe">
+                        <MenuItem x:Name="Posteryzacja" Header="Sposteryzuj obraz" Click="Posteryzuj_Click"/>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
         </StackPanel>

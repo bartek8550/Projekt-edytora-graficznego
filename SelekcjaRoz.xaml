@@ -1,0 +1,30 @@
+﻿<Window x:Class="Projekt_edytora_graficznego.SelekcjaRoz"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt_edytora_graficznego"
+        mc:Ignorable="d"
+        Title="SelekcjaRoz" Height="250" Width="200">
+    <Grid RenderTransformOrigin="0.5,0.5" Margin="0,0,0,-1">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform Angle="-0.213"/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <TextBlock Text="Podaj dane" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="0,7,0,0"/>
+        <Label Content="P1" HorizontalAlignment="Left" Margin="12,45,0,0" VerticalAlignment="Top" Width="26"/>
+        <TextBox x:Name="P1" HorizontalAlignment="Left" Margin="43,49,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <Label Content="P2" HorizontalAlignment="Left" Margin="12,84,0,0" VerticalAlignment="Top" Width="26"/>
+        <TextBox x:Name="P2" HorizontalAlignment="Left" Margin="43,88,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <Label Content="Q3" HorizontalAlignment="Left" Margin="12,127,0,0" VerticalAlignment="Top" Width="26"/>
+        <TextBox x:Name="Q3" HorizontalAlignment="Left" Margin="41,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged" />
+        <Label Content="Q4" HorizontalAlignment="Left" Margin="12,170,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.696,-0.561"/>
+        <TextBox x:Name="Q4" HorizontalAlignment="Left" Margin="43,174,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <Button x:Name="Zatwierdz" Content="Zatwierdź" HorizontalAlignment="Left" Margin="75,203,0,0" Click="Button_Click" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
