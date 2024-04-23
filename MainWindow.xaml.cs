@@ -405,7 +405,7 @@ namespace Projekt_edytora_graficznego
                     CvInvoke.Sobel(image, mat1, DepthType.Cv64F, 0, 1, 3, 1, 0, det.bt);  
                 }
                 Mat mat2 = new Mat();
-                CvInvoke.ConvertScaleAbs(mat1, mat2, 1.0, 1.0);
+                CvInvoke.ConvertScaleAbs(mat1, mat2, 1.0, 0);
                 LastImage.UpdateImageAndHistogram(mat2);
             }  
         }
@@ -426,7 +426,7 @@ namespace Projekt_edytora_graficznego
                 Mat mat = new Mat();
                 CvInvoke.Laplacian(image, mat, DepthType.Cv64F, 1, 1, 0, det.bt);
                 Mat mat1 = new Mat();
-                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 1.0);
+                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 0);
                 LastImage.UpdateImageAndHistogram(mat1);
             }
             else {
@@ -449,9 +449,10 @@ namespace Projekt_edytora_graficznego
             if (det.ShowDialog() == true)
             {
                 Mat mat = new Mat();
-                CvInvoke.Canny(image, mat, (double)det.TresholdValue1, (double)det.TresholdValue2);
+                CvInvoke.CopyMakeBorder(image, mat, 1,1,1,1, det.bt);
+                CvInvoke.Canny(mat, mat, (double)det.TresholdValue1, (double)det.TresholdValue2);
                 Mat mat1 = new Mat();
-                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 1.0);
+                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 0);
                 LastImage.UpdateImageAndHistogram(mat1);
             }
             else
@@ -470,6 +471,63 @@ namespace Projekt_edytora_graficznego
             }
 
             DetekcjaKrawedzi det = new DetekcjaKrawedzi("Prewitt");
+            if (det.ShowDialog() == true)
+            {
+                Mat mat = new Mat();
+                
+                Mat mat1 = new Mat();
+                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 0);
+                LastImage.UpdateImageAndHistogram(mat1);
+            }
+            else
+            {
+                MessageBox.Show("Wystąpił błąd");
+            }
+
+        }
+
+        private void WyostrzanieLiniowe_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+            MenuItem? menu = sender as MenuItem;
+            if (menu != null) { 
+                string? option = menu.CommandParameter as string;
+                Matrix<double> matrix = option switch
+                {
+                    "Maska 1" => new Matrix<double>(3, 3)
+                    {
+                        Data = new double[3, 3] {
+                        { 0, -1, 0 },
+                        { -1, 5, -1 },
+                        { 0, -1, 0 } }
+                    },
+
+                    "Maska 2" => new Matrix<double>(3, 3)
+                    {
+                        Data = new double[3, 3] {
+                        { -1, -1, -1 },
+                        { -1, 9, -1 },
+                        { -1, -1, -1 } }
+                    },
+
+                    "Maska 3" => new Matrix<double>(3, 3)
+                    {
+                        Data = new double[3, 3] {
+                        { 1, -2, 1 },
+                        { -2, 5, -2 },
+                        { 1, -2, 1 } }
+                    }
+                };
+                Mat mat = new Mat();
+                CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, BorderType.Default);
+                LastImage.UpdateImageAndHistogram(mat);
+
+            }            
         }
 
         #endregion lab2
