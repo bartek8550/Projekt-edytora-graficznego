@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_edytora_graficznego"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="40">
+        Title="MainWindow" Height="450" Width="100">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Menu MaxHeight="25" Background="#FFA9D1F4">
@@ -31,6 +31,24 @@
                 <MenuItem Header="Lab2">
                     <MenuItem Header="Obrazy szarocieniowe">
                         <MenuItem x:Name="Posteryzacja" Header="Sposteryzuj obraz" Click="Posteryzuj_Click"/>
+                        <MenuItem Header="Wygładzanie liniowe">
+                            <MenuItem x:Name="Blur" Header="Blur">
+                                <MenuItem x:Name="BlurIsolated" Header="isolated" Click="Blur_Click" CommandParameter="isolated"/>
+                                <MenuItem x:Name="BlurReflect" Header="reflect" Click="Blur_Click" CommandParameter="reflect"/>
+                                <MenuItem x:Name="BlurReplicate" Header="replicate" Click="Blur_Click" CommandParameter="replicate"/>
+                            </MenuItem>
+                            <MenuItem x:Name="gaussianBlur" Header="Gaussian Blur">
+                                <MenuItem x:Name="gaussianBlurIsolated" Header="isolated" Click="gaussianBlur_Click" CommandParameter="isolated"/>
+                                <MenuItem x:Name="gaussianBlurReflect" Header="reflect" Click="gaussianBlur_Click" CommandParameter="reflect"/>
+                                <MenuItem x:Name="gaussianBlurReplicate" Header="replicate" Click="gaussianBlur_Click" CommandParameter="replicate"/>
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem x:Name="DetekcjaKrawedzi" Header="Detekcja krawędzi">
+                            <MenuItem x:Name="Sobel" Header="Sobel" Click="Sobel_Click" />
+                            <MenuItem x:Name="Laplacian" Header="Laplacian" Click="Laplacian_Click"/>
+                            <MenuItem x:Name="Canny" Header="Canny" Click="Canny_Click"/>
+                            <MenuItem x:Name="Prewitt" Header="Prewitt" Click="Prewitt_Click"/>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>

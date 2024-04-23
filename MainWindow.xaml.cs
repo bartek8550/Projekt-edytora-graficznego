@@ -24,6 +24,7 @@ using Point = System.Drawing.Point;
 using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using Emgu.CV.Reg;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Projekt_edytora_graficznego
 {
@@ -328,7 +329,148 @@ namespace Projekt_edytora_graficznego
             }
         }
 
+        private void Blur_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
 
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            MenuItem? menuItem = sender as MenuItem;
+            if (menuItem != null) { 
+                string? cp = menuItem.CommandParameter as string;
+                BorderType bt = cp switch
+                {
+                    "isolated" => BorderType.Isolated,
+                    "reflect" => BorderType.Reflect,
+                    "replicate" => BorderType.Replicate,
+                    _ => BorderType.Isolated
+                };
+
+                Mat mat = new Mat();
+                CvInvoke.Blur(image, mat, new System.Drawing.Size(3, 3), new Point(-1, -1), bt);
+                LastImage.UpdateImageAndHistogram(mat);
+            }
+        }
+
+        private void gaussianBlur_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            MenuItem? menuItem = sender as MenuItem;
+            if (menuItem != null)
+            {
+                string? cp = menuItem.CommandParameter as string;
+                BorderType bt = cp switch
+                {
+                    "isolated" => BorderType.Isolated,
+                    "reflect" => BorderType.Reflect,
+                    "replicate" => BorderType.Replicate,
+                    _ => BorderType.Isolated
+                };
+
+                Mat mat = new Mat();
+                CvInvoke.GaussianBlur(image, mat, new System.Drawing.Size(3,3), 1.5, 0, bt);
+                LastImage.UpdateImageAndHistogram(mat);
+            }
+
+        }
+
+        private void Sobel_Click(object sender, RoutedEventArgs e) {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            DetekcjaKrawedzi det = new DetekcjaKrawedzi("Sobel");
+
+            if (det.ShowDialog() == true) {
+                Mat mat1 = new Mat(new System.Drawing.Size(image.Width, image.Height), DepthType.Cv64F, 1);
+                if (det.SobelDirection == "X")
+                {
+                    CvInvoke.Sobel(image, mat1, DepthType.Cv64F, 1, 0, 3, 1, 0, det.bt);
+                }
+                else {
+                    CvInvoke.Sobel(image, mat1, DepthType.Cv64F, 0, 1, 3, 1, 0, det.bt);  
+                }
+                Mat mat2 = new Mat();
+                CvInvoke.ConvertScaleAbs(mat1, mat2, 1.0, 1.0);
+                LastImage.UpdateImageAndHistogram(mat2);
+            }  
+        }
+
+        private void Laplacian_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            DetekcjaKrawedzi det = new DetekcjaKrawedzi("Laplacian");
+
+            if (det.ShowDialog() == true)
+            {
+                Mat mat = new Mat();
+                CvInvoke.Laplacian(image, mat, DepthType.Cv64F, 1, 1, 0, det.bt);
+                Mat mat1 = new Mat();
+                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 1.0);
+                LastImage.UpdateImageAndHistogram(mat1);
+            }
+            else {
+                MessageBox.Show("Wystąpił błąd");
+            }
+
+        }
+
+        private void Canny_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            DetekcjaKrawedzi det = new DetekcjaKrawedzi("Canny");
+
+            if (det.ShowDialog() == true)
+            {
+                Mat mat = new Mat();
+                CvInvoke.Canny(image, mat, (double)det.TresholdValue1, (double)det.TresholdValue2);
+                Mat mat1 = new Mat();
+                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 1.0);
+                LastImage.UpdateImageAndHistogram(mat1);
+            }
+            else
+            {
+                MessageBox.Show("Wystąpił błąd");
+            }
+        }
+
+        private void Prewitt_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            DetekcjaKrawedzi det = new DetekcjaKrawedzi("Prewitt");
+        }
 
         #endregion lab2
 
@@ -430,10 +572,14 @@ namespace Projekt_edytora_graficznego
             return image2.Mat;
         }
 
+
+
+
         #endregion lab2
 
         #endregion
 
+       
     }
 
 }

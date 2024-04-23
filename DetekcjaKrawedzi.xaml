@@ -1,0 +1,35 @@
+﻿<Window x:Class="Projekt_edytora_graficznego.DetekcjaKrawedzi"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt_edytora_graficznego"
+        mc:Ignorable="d"
+        Title="DetekcjaKrawedzi" Height="300" Width="300">
+    <Grid>
+        <ComboBox Name="SobelType" Width="75" Height="25" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" SelectedIndex="0" Visibility="Hidden">
+            <ComboBoxItem Content="X"/>
+            <ComboBoxItem Content="Y"/>
+        </ComboBox>
+        <ComboBox Name="PrewittType" Width="75" Height="25" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Visibility="Hidden">
+            <ComboBoxItem Content="N"/>
+            <ComboBoxItem Content="NE"/>
+            <ComboBoxItem Content="E"/>
+            <ComboBoxItem Content="SE"/>
+            <ComboBoxItem Content="S"/>
+            <ComboBoxItem Content="SW"/>
+            <ComboBoxItem Content="W"/>
+            <ComboBoxItem Content="NW"/>
+        </ComboBox>
+
+        <TextBox x:Name="Treshold1" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,40,0,0" Visibility="Hidden"/>
+        <TextBox x:Name="Treshold2" Width="100" Height="30" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,40" Visibility="Hidden"/>
+
+        <ComboBox Name="BorderTypeVal" Width="75" Height="25" SelectedIndex="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0">
+            <ComboBoxItem Content="isolated"/>
+            <ComboBoxItem Content="reflect"/>
+            <ComboBoxItem Content="replicate"/>
+        </ComboBox>
+        <Button Content="Potwierdź" HorizontalAlignment="Left" Margin="123,217,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.892,0.617" Click="Button_Click"/>
+    </Grid>
+</Window>
