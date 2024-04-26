@@ -25,6 +25,7 @@ namespace Projekt_edytora_graficznego
         public string? PrewittDirection { get; set; }
         public double? TresholdValue1 { get; set; }
         public double? TresholdValue2 { get; set; }
+        public string? LaplacianMasks { get; set; }
         public string? pointerGet { get; set; }
         public BorderType bt { get; set; }
 
@@ -42,6 +43,9 @@ namespace Projekt_edytora_graficznego
                 case "Canny":
                     Treshold1.Visibility = Visibility.Visible;
                     Treshold2.Visibility = Visibility.Visible;
+                    break;
+                case "Laplacian3Mask":
+                    LaplacianType.Visibility = Visibility.Visible;
                     break;
                 case "Laplacian":
                     break;
@@ -79,6 +83,13 @@ namespace Projekt_edytora_graficznego
                 6 => "W",
                 7 => "NW"
 
+            };
+
+            this.LaplacianMasks = LaplacianType.SelectedIndex switch
+            {
+                0 => "Maska 1",
+                1 => "Maska 2",
+                2 => "Maska 3"
             };
 
             this.bt = BorderTypeVal.SelectedIndex switch

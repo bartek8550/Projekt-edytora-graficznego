@@ -473,19 +473,127 @@ namespace Projekt_edytora_graficznego
             DetekcjaKrawedzi det = new DetekcjaKrawedzi("Prewitt");
             if (det.ShowDialog() == true)
             {
-                Mat mat = new Mat();
-                
-                Mat mat1 = new Mat();
-                CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 0);
-                LastImage.UpdateImageAndHistogram(mat1);
-            }
-            else
-            {
-                MessageBox.Show("Wystąpił błąd");
+                switch (det.PrewittDirection)
+                {
+                    case "N":
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { 1, 1, 1 },
+                                { 0, 0, 0 },
+                                { -1, -1, -1 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+                        }
+                    case "NE": 
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { 0, 1, 1 },
+                                { -1, 0, 1 },
+                                { -1, -1, 0 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+                        }
+                    case "E": 
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { -1, 0, 1 },
+                                { -1, 0, 1 },
+                                { -1, 0, 1 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+
+                        }
+                    case "SE":
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { -1, -1, 0 },
+                                { -1, 0, 1 },
+                                { 0, 1, 1 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+                        }
+                    case "S":
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { -1, -1, -1 },
+                                { 0, 0, 0 },
+                                { 1, 1, 1 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+
+                        }
+                    case "SW":
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { 0, -1, -1 },
+                                { 1, 0, -1 },
+                                { 1, 1, 0 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+                        }
+                    case "W":
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { 1, 0, -1 },
+                                { 1, 0, -1 },
+                                { 1, 0, -1 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+                        }
+                    case "NW":
+                        {
+                            Matrix<double> matrix = new Matrix<double>(3, 3)
+                            {
+                                Data = new double[3, 3] {
+                                { 1, 1, 0 },
+                                { 1, 0, -1 },
+                                { 0, -1, -1 } }
+                            };
+                            Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                            CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                            LastImage.UpdateImageAndHistogram(mat.Mat);
+                            break;
+                        }
+                }
             }
 
         }
-
+        //Laplacian z 3 maskami
         private void WyostrzanieLiniowe_Click(object sender, RoutedEventArgs e)
         {
             Mat image = LastImage.MatImage;
@@ -494,40 +602,51 @@ namespace Projekt_edytora_graficznego
                 MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
                 return;
             }
-            MenuItem? menu = sender as MenuItem;
-            if (menu != null) { 
-                string? option = menu.CommandParameter as string;
-                Matrix<double> matrix = option switch
+
+            DetekcjaKrawedzi det = new DetekcjaKrawedzi("Laplacian3Mask");
+            if (det.ShowDialog() == true)
+            {
+                Mat mat1 = new Mat(new System.Drawing.Size(image.Width, image.Height), DepthType.Cv64F, 1);
+                if (det.LaplacianMasks == "Maska 1")
                 {
-                    "Maska 1" => new Matrix<double>(3, 3)
+                    Matrix<double> matrix = new Matrix<double>(3, 3)
                     {
                         Data = new double[3, 3] {
                         { 0, -1, 0 },
                         { -1, 5, -1 },
                         { 0, -1, 0 } }
-                    },
-
-                    "Maska 2" => new Matrix<double>(3, 3)
+                    };
+                    Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                    CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                    LastImage.UpdateImageAndHistogram(mat.Mat);
+                }
+                else if (det.LaplacianMasks == "Maska 2")
+                {
+                    Matrix<double> matrix = new Matrix<double>(3, 3)
                     {
                         Data = new double[3, 3] {
                         { -1, -1, -1 },
                         { -1, 9, -1 },
                         { -1, -1, -1 } }
-                    },
-
-                    "Maska 3" => new Matrix<double>(3, 3)
+                    };
+                    Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                    CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                    LastImage.UpdateImageAndHistogram(mat.Mat);
+                }
+                else if (det.LaplacianMasks == "Maska 3")
+                {
+                    Matrix<double> matrix = new Matrix<double>(3, 3)
                     {
                         Data = new double[3, 3] {
                         { 1, -2, 1 },
                         { -2, 5, -2 },
                         { 1, -2, 1 } }
-                    }
-                };
-                Mat mat = new Mat();
-                CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, BorderType.Default);
-                LastImage.UpdateImageAndHistogram(mat);
-
-            }            
+                    };
+                    Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                    CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, det.bt);
+                    LastImage.UpdateImageAndHistogram(mat.Mat);
+                }
+            }
         }
 
         #endregion lab2
