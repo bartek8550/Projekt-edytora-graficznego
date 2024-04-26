@@ -25,6 +25,7 @@ using System.IO;
 using static System.Net.Mime.MediaTypeNames;
 using Emgu.CV.Reg;
 using static System.Formats.Asn1.AsnWriter;
+using Emgu.CV.Dnn;
 
 namespace Projekt_edytora_graficznego
 {
@@ -606,7 +607,6 @@ namespace Projekt_edytora_graficznego
             DetekcjaKrawedzi det = new DetekcjaKrawedzi("Laplacian3Mask");
             if (det.ShowDialog() == true)
             {
-                Mat mat1 = new Mat(new System.Drawing.Size(image.Width, image.Height), DepthType.Cv64F, 1);
                 if (det.LaplacianMasks == "Maska 1")
                 {
                     Matrix<double> matrix = new Matrix<double>(3, 3)
@@ -647,6 +647,30 @@ namespace Projekt_edytora_graficznego
                     LastImage.UpdateImageAndHistogram(mat.Mat);
                 }
             }
+        }
+
+        private void OperacjaLiniowaSasiedzctwa_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+            OperacjaLiniowa ol = new OperacjaLiniowa();
+            if (ol.ShowDialog() == true) {
+                Matrix<double> matrix = new Matrix<double>(3, 3)
+                {
+                    Data = new double[3, 3] {
+                        { ol.value1, ol.value2, ol.value3 },
+                        { ol.value4, ol.value5, ol.value6 },
+                        { ol.value7, ol.value8, ol.value9 } }
+                };
+                Image<Gray, byte> mat = image.ToImage<Gray, byte>();
+                CvInvoke.Filter2D(image, mat, matrix, new System.Drawing.Point(-1, -1), 0, ol.bt);
+                LastImage.UpdateImageAndHistogram(mat.Mat);
+            }
+
         }
 
         #endregion lab2
@@ -752,11 +776,12 @@ namespace Projekt_edytora_graficznego
 
 
 
+
         #endregion lab2
 
         #endregion
 
-       
+ 
     }
 
 }

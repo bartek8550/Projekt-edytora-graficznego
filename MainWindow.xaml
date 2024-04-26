@@ -50,7 +50,7 @@
                             <MenuItem x:Name="Prewitt" Header="Prewitt" Click="Prewitt_Click"/>
                         </MenuItem>
                         <MenuItem x:Name="WyostrzanieLiniowe" Header="Wyostrzanie liniowe" Click="WyostrzanieLiniowe_Click"/>
-
+                        <MenuItem x:Name="OperacjaLiniowaSasiedzctwa" Header="Operacja liniowa sąsiedzctwa" Click="OperacjaLiniowaSasiedzctwa_Click"/>
                     </MenuItem>
                 </MenuItem>
             </Menu>
