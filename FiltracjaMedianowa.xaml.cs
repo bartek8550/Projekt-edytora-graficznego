@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 namespace Projekt_edytora_graficznego
 {
     /// <summary>
-    /// Logika interakcji dla klasy OperacjaLiniowa.xaml
+    /// Logika interakcji dla klasy FiltracjaMedianowa.xaml
     /// </summary>
-    public partial class OperacjaLiniowa : Window
+    public partial class FiltracjaMedianowa : Window
     {
         public double value1 { get; set; }
         public double value2 { get; set; }
@@ -29,9 +29,9 @@ namespace Projekt_edytora_graficznego
         public double value7 { get; set; }
         public double value8 { get; set; }
         public double value9 { get; set; }
-
         public BorderType bt { get; set; }
-        public OperacjaLiniowa()
+
+        public FiltracjaMedianowa()
         {
             InitializeComponent();
         }
@@ -39,14 +39,14 @@ namespace Projekt_edytora_graficznego
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (double.TryParse(textBox1.Text, out double value1) &&
-                double.TryParse(textBox2.Text, out double value2) &&
-                double.TryParse(textBox3.Text, out double value3) &&
-                double.TryParse(textBox4.Text, out double value4) &&
-                double.TryParse(textBox5.Text, out double value5) &&
-                double.TryParse(textBox6.Text, out double value6) &&
-                double.TryParse(textBox7.Text, out double value7) &&
-                double.TryParse(textBox8.Text, out double value8) &&
-                double.TryParse(textBox9.Text, out double value9))
+               double.TryParse(textBox2.Text, out double value2) &&
+               double.TryParse(textBox3.Text, out double value3) &&
+               double.TryParse(textBox4.Text, out double value4) &&
+               double.TryParse(textBox5.Text, out double value5) &&
+               double.TryParse(textBox6.Text, out double value6) &&
+               double.TryParse(textBox7.Text, out double value7) &&
+               double.TryParse(textBox8.Text, out double value8) &&
+               double.TryParse(textBox9.Text, out double value9))
             {
                 this.value1 = value1;
                 this.value2 = value2;

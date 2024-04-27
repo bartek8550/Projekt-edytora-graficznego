@@ -51,6 +51,23 @@
                         </MenuItem>
                         <MenuItem x:Name="WyostrzanieLiniowe" Header="Wyostrzanie liniowe" Click="WyostrzanieLiniowe_Click"/>
                         <MenuItem x:Name="OperacjaLiniowaSasiedzctwa" Header="Operacja liniowa sąsiedzctwa" Click="OperacjaLiniowaSasiedzctwa_Click"/>
+                        <MenuItem x:Name="FiltracjaMedianowa" Header="Filtracja medianowa">
+                            <MenuItem x:Name="_3x3" Header="3x3" CommandParameter="3x3">
+                                <MenuItem x:Name="_3x3Isolated" Header="isolated" Click="FiltracjaMedianowa_Click" CommandParameter="3x3 isolated"/>
+                                <MenuItem x:Name="_3x3Reflect" Header="reflect" Click="FiltracjaMedianowa_Click" CommandParameter="3x3 reflect"/>
+                                <MenuItem x:Name="_3x3Replicate" Header="replicate" Click="FiltracjaMedianowa_Click" CommandParameter="3x3 replicate"/>
+                            </MenuItem>
+                            <MenuItem x:Name="_5x5" Header="5x5" CommandParameter="5x5">
+                                <MenuItem x:Name="_5x5Isolated" Header="isolated" Click="FiltracjaMedianowa_Click" CommandParameter="5x5 isolated"/>
+                                <MenuItem x:Name="_5x5Reflect" Header="reflect" Click="FiltracjaMedianowa_Click" CommandParameter="5x5 reflect"/>
+                                <MenuItem x:Name="_5x5Replicate" Header="replicate" Click="FiltracjaMedianowa_Click" CommandParameter="5x5 replicate"/>
+                            </MenuItem>
+                            <MenuItem x:Name="_7x7" Header="7x7" CommandParameter="7x7">
+                                <MenuItem x:Name="_7x7Isolated" Header="isolated" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 isolated"/>
+                                <MenuItem x:Name="_7x7Reflect" Header="reflect" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 reflect"/>
+                                <MenuItem x:Name="_7x7Replicate" Header="replicate" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 replicate"/>
+                            </MenuItem>
+                        </MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>

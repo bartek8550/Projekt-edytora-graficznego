@@ -672,6 +672,66 @@ namespace Projekt_edytora_graficznego
             }
 
         }
+        private void FiltracjaMedianowa_Click(object sender, RoutedEventArgs e) 
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+            MenuItem? menuItem = sender as MenuItem;
+            if (menuItem != null)
+            {
+                string? cp = menuItem.CommandParameter as string;
+                string[] tab = cp.Split(' ');
+                if (tab[0] == "3x3")
+                {
+                    BorderType bt = tab[1] switch
+                    {
+                        "isolated" => BorderType.Isolated,
+                        "reflect" => BorderType.Reflect,
+                        "replicate" => BorderType.Replicate,
+                        _ => BorderType.Isolated
+                    };
+                    Mat mat = new Mat();
+                    CvInvoke.CopyMakeBorder(image, mat, 1, 1, 1, 1, bt);
+                    CvInvoke.MedianBlur(mat, mat, 3);
+                    LastImage.UpdateImageAndHistogram(mat);
+                }
+                else if (tab[0] == "5x5")
+                {
+                    BorderType bt = tab[1] switch
+                    {
+                        "isolated" => BorderType.Isolated,
+                        "reflect" => BorderType.Reflect,
+                        "replicate" => BorderType.Replicate,
+                        _ => BorderType.Isolated
+                    };
+                    Mat mat = new Mat();
+                    CvInvoke.CopyMakeBorder(image, mat, 1, 1, 1, 1, bt);
+                    CvInvoke.MedianBlur(mat, mat, 5);
+                    LastImage.UpdateImageAndHistogram(mat);
+                }
+                else if (tab[0] == "7x7") {
+                    BorderType bt = tab[1] switch
+                    {
+                        "isolated" => BorderType.Isolated,
+                        "reflect" => BorderType.Reflect,
+                        "replicate" => BorderType.Replicate,
+                        _ => BorderType.Isolated
+                    };
+                    Mat mat = new Mat();
+                    CvInvoke.CopyMakeBorder(image, mat, 1, 1, 1, 1, bt);
+                    CvInvoke.MedianBlur(mat, mat, 7);
+                    LastImage.UpdateImageAndHistogram(mat);
+                }
+
+                
+            }
+
+        }
+
 
         #endregion lab2
 
