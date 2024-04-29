@@ -134,6 +134,7 @@
             <TextBox x:Name="textBox135" Grid.Row="4" Grid.Column="4" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </Grid>
 
-        <Button Content="Wykonaj" HorizontalAlignment="Left" Margin="256,44,0,70" Click="Button_Click" Grid.Column="1" Grid.Row="2"/>
+        <Button Content="Wykonaj" HorizontalAlignment="Center" Margin="0,154,0,-40" Click="Button_Click" Grid.Column="1" Grid.Row="2"/>
+        <Button Grid.Column="1" Content="Pokaż maske 5x5" HorizontalAlignment="Left" Margin="230,20,0,0" Grid.Row="2" VerticalAlignment="Top" Click="Button_Click_1"/>
     </Grid>
 </Window>
