@@ -138,6 +138,7 @@ namespace Projekt_edytora_graficznego
                 textBox121.Text = result1[3, 0].ToString(); textBox122.Text = result1[3, 1].ToString(); textBox123.Text = result1[3, 2].ToString(); textBox124.Text = result1[3, 3].ToString(); textBox125.Text = result1[3, 4].ToString();
                 textBox131.Text = result1[4, 0].ToString(); textBox132.Text = result1[4, 1].ToString(); textBox133.Text = result1[4, 2].ToString(); textBox134.Text = result1[4, 3].ToString(); textBox135.Text = result1[4, 4].ToString();
 
+
             }
             else
             {
