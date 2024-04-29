@@ -26,6 +26,7 @@ using static System.Net.Mime.MediaTypeNames;
 using Emgu.CV.Reg;
 using static System.Formats.Asn1.AsnWriter;
 using Emgu.CV.Dnn;
+using System.Runtime.CompilerServices;
 
 namespace Projekt_edytora_graficznego
 {
@@ -40,7 +41,8 @@ namespace Projekt_edytora_graficznego
         }
 
         public static ImageWindow? LastImage { get; set; }
-
+        public static List<ImageWindow> imageWindows = new List<ImageWindow>();
+        public int i = 1;
         #region Clicki
 
         #region lab1
@@ -732,7 +734,88 @@ namespace Projekt_edytora_graficznego
 
         }
 
+        private void OperacjePunktoweDwuargumentowe_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
 
+            OperacjePunktoweDwuargumentowe opd = new OperacjePunktoweDwuargumentowe(imageWindows);
+            if (opd.ShowDialog() == true)
+            {
+                Mat mat = new Mat();
+                switch (opd.operacja) 
+                {
+                    case 0:                      
+                        CvInvoke.Add(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
+                        Otworz(mat);
+                        break;
+                    case 1:
+                        CvInvoke.Subtract(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
+                        Otworz(mat);
+                        break;
+                    case 2:
+                        CvInvoke.AddWeighted(imageWindows[opd.ind1].MatImage, opd.ciezar1, imageWindows[opd.ind2].MatImage, opd.ciezar2, 0, mat, DepthType.Default);
+                        Otworz(mat);
+                        break;
+                    case 3:
+                        CvInvoke.BitwiseAnd(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
+                        Otworz(mat);
+                        break;
+                    case 4:
+                        CvInvoke.BitwiseOr(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
+                        Otworz(mat);
+                        break;
+                    case 5:
+                        CvInvoke.BitwiseNot(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
+                        Otworz(mat);
+                        break;
+                    case 6:
+                        CvInvoke.BitwiseXor(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
+                        Otworz(mat);
+                        break;
+                }
+                
+            }
+            else {
+                MessageBox.Show("Coś poszło nie tak");
+            }
+
+        }
+
+        private void Filtracja1i2Etap_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            Filtracja1i2Etap fe = new Filtracja1i2Etap();
+            if (fe.ShowDialog() == true)
+            {
+                Matrix<double> matrix1 = new Matrix<double>(3, 3)
+                {
+                    Data = new double[3, 3] {
+                        { fe.tb301, fe.tb302, fe.tb303 },
+                        { fe.tb304, fe.tb305, fe.tb306 },
+                        { fe.tb307, fe.tb308, fe.tb309 } }
+                };
+
+                Matrix<double> matrix2 = new Matrix<double>(3, 3)
+                {
+                    Data = new double[3, 3] {
+                        { fe.tb311, fe.tb312, fe.tb313 },
+                        { fe.tb314, fe.tb315, fe.tb316 },
+                        { fe.tb317, fe.tb318, fe.tb319 } }
+                };
+
+            }
+        }
         #endregion lab2
 
 
@@ -746,7 +829,20 @@ namespace Projekt_edytora_graficznego
             Mat MatGray = ToGray(path);
 
             ImageWindow imageWindow = new ImageWindow(MatGray);
+            imageWindows.Add(imageWindow);
+            imageWindow.Closing += (w , j) => imageWindows.Remove(imageWindow);
             imageWindow.Title = path;
+            imageWindow.Show();
+        }
+
+        private void Otworz(Mat mat) 
+        {
+            
+            ImageWindow imageWindow = new ImageWindow(mat);
+            imageWindows.Add(imageWindow);
+            imageWindow.Closing += (w, j) => imageWindows.Remove(imageWindow);
+            imageWindow.Title = $"Obrazek {this.i}";
+            this.i += this.i + this.i * this.i;
             imageWindow.Show();
         }
 
@@ -755,6 +851,8 @@ namespace Projekt_edytora_graficznego
             Mat MatColor = ToColor(path);
 
             ImageWindow imageWindow = new ImageWindow(MatColor);
+            imageWindows.Add(imageWindow);
+            imageWindow.Closing += (w, j) => imageWindows.Remove(imageWindow);
             imageWindow.Title = path;
             imageWindow.Show();
         }
@@ -837,11 +935,11 @@ namespace Projekt_edytora_graficznego
 
 
 
+
         #endregion lab2
 
         #endregion
 
- 
     }
 
 }

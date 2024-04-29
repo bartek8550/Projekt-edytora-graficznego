@@ -67,7 +67,10 @@
                                 <MenuItem x:Name="_7x7Reflect" Header="reflect" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 reflect"/>
                                 <MenuItem x:Name="_7x7Replicate" Header="replicate" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 replicate"/>
                             </MenuItem>
+                            
                         </MenuItem>
+                        <MenuItem x:Name="OperacjePunktoweDwuargumentowe" Header="Operacje punktowe dwuargumentowe" Click="OperacjePunktoweDwuargumentowe_Click"/>
+                        <MenuItem x:Name="Filtracja1i2Etap" Header="Filtracja jedno i dwu - etapowa" Click="Filtracja1i2Etap_Click"/>
                     </MenuItem>
                 </MenuItem>
             </Menu>
