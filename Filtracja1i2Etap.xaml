@@ -103,8 +103,8 @@
 
 
 
-            <TextBox x:Name="textBox71" Grid.Row="0" Grid.Column="0" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="textBox82" Grid.Row="0" Grid.Column="1" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="textBox91" Grid.Row="0" Grid.Column="0" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="textBox92" Grid.Row="0" Grid.Column="1" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox x:Name="textBox93" Grid.Row="0" Grid.Column="2" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox x:Name="textBox94" Grid.Row="0" Grid.Column="3" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
             <TextBox x:Name="textBox95" Grid.Row="0" Grid.Column="4" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
