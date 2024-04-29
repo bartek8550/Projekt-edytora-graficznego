@@ -796,20 +796,20 @@ namespace Projekt_edytora_graficznego
             }
 
             Filtracja1i2Etap fe = new Filtracja1i2Etap();
-           
-            
-            if (fe.maskv == 0)
+            if (fe.ShowDialog() == true)
             {
-                CvInvoke.Filter2D(image, image, fe.resultv, new System.Drawing.Point(-1, -1), 0, fe.bt);
-                LastImage.UpdateImageAndHistogram(image);
+                if (fe.maskv == 0)
+                {
+                    CvInvoke.Filter2D(image, image, fe.resultv, new System.Drawing.Point(-1, -1), 0, fe.bt);
+                    LastImage.UpdateImageAndHistogram(image);
+                }
+                else
+                {
+                    CvInvoke.Filter2D(image, image, fe.m1v, new Point(-1, -1), 0, fe.bt);
+                    CvInvoke.Filter2D(image, image, fe.m2v, new Point(-1, -1), 0, fe.bt);
+                    LastImage.UpdateImageAndHistogram(image);
+                }
             }
-            else
-            {
-                CvInvoke.Filter2D(image, image, fe.m1v, new Point(-1, -1), 0, fe.bt);
-                CvInvoke.Filter2D(image, image, fe.m2v, new Point(-1, -1), 0, fe.bt);
-                LastImage.UpdateImageAndHistogram(image);
-            }
-           
             
         }
         #endregion lab2
