@@ -24,6 +24,12 @@
             <ComboBoxItem Content="2-etapowa"/>
         </ComboBox>
 
+        <ComboBox x:Name="BorderTypeVal" Width="75" Height="24" SelectedIndex="0" RenderTransformOrigin="0.482,0.556" Grid.Column="1" Margin="442,46,27,130" Grid.Row="1">
+            <ComboBoxItem Content="isolated"/>
+            <ComboBoxItem Content="reflect"/>
+            <ComboBoxItem Content="replicate"/>
+        </ComboBox>
+
         <Label Content="Maska 1" HorizontalAlignment="Center" Margin="0,28,0,182" Grid.RowSpan="2"/>
         <Grid Grid.Row="1" Grid.Column="0" Margin="10">
             <Grid.RowDefinitions>
@@ -78,7 +84,7 @@
         </Grid>
 
 
-        <Label Content="Maska 5x5 - wynikowa" HorizontalAlignment="Left" Margin="407,82,0,82" Grid.Column="1" Grid.Row="1"/>
+        <Label Content="Maska 5x5 - wynikowa" HorizontalAlignment="Left" Margin="415,10,0,154" Grid.Column="1" Grid.Row="1"/>
         <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -128,6 +134,6 @@
             <TextBox x:Name="textBox135" Grid.Row="4" Grid.Column="4" Width="40" Height="30" Margin="5" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
         </Grid>
 
-        <Button Content="Wykonaj" HorizontalAlignment="Left" Margin="205,112,0,2" Click="Button_Click" Grid.Column="1" Grid.Row="2"/>
+        <Button Content="Wykonaj" HorizontalAlignment="Left" Margin="256,44,0,70" Click="Button_Click" Grid.Column="1" Grid.Row="2"/>
     </Grid>
 </Window>

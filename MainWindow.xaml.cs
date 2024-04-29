@@ -798,23 +798,31 @@ namespace Projekt_edytora_graficznego
             Filtracja1i2Etap fe = new Filtracja1i2Etap();
             if (fe.ShowDialog() == true)
             {
-                Matrix<double> matrix1 = new Matrix<double>(3, 3)
-                {
-                    Data = new double[3, 3] {
-                        { fe.tb301, fe.tb302, fe.tb303 },
-                        { fe.tb304, fe.tb305, fe.tb306 },
-                        { fe.tb307, fe.tb308, fe.tb309 } }
-                };
+                double[,] matrix1 = new double[,] { { fe.tb301, fe.tb302, fe.tb303 }, { fe.tb304, fe.tb305, fe.tb306 }, { fe.tb307, fe.tb308, fe.tb309 } };
+                double[,] matrix2 = new double[,] { { fe.tb311, fe.tb312, fe.tb313 }, { fe.tb314, fe.tb315, fe.tb316 }, { fe.tb317, fe.tb318, fe.tb319 } };
+                double[,] r = new double[5, 5];
 
-                Matrix<double> matrix2 = new Matrix<double>(3, 3)
+                for (int i = 0; i < 3; i++)
                 {
-                    Data = new double[3, 3] {
-                        { fe.tb311, fe.tb312, fe.tb313 },
-                        { fe.tb314, fe.tb315, fe.tb316 },
-                        { fe.tb317, fe.tb318, fe.tb319 } }
-                };
+                    for (int j = 0; j < 3; j++)
+                    {
+                        for (int m = 0; m < 3; m++)
+                        {
+                            for (int n = 0; n < 3; n++)
+                            {
+                                r[i + m, j + n] += matrix1[i, j] * matrix2[m, n];
 
+                                // Warunek if w ostatniej pętli
+                                if (r[i + m, j + n] > 10) // Przykładowy warunek
+                                {
+                                    r[i + m, j + n] = 10; // Jeśli wartość przekroczy 10, ustawia ją na 10
+                                }
+                            }
+                        }
+                    }
+                }
             }
+            
         }
         #endregion lab2
 

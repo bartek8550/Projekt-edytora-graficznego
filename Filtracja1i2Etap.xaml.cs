@@ -42,7 +42,8 @@ namespace Projekt_edytora_graficznego
         public double tb319 { get; set; }
 
         public BorderType bt { get; set; }
-        public FiltracjaMedianowa()
+
+        public Filtracja1i2Etap()
         {
             InitializeComponent();
         }
@@ -92,7 +93,6 @@ namespace Projekt_edytora_graficznego
                     0 => BorderType.Isolated,
                     1 => BorderType.Reflect,
                     2 => BorderType.Replicate
-
                 };
 
 
@@ -102,10 +102,6 @@ namespace Projekt_edytora_graficznego
             {
                 MessageBox.Show("Wprowadź poprawne liczby w pola maski.");
             }
-
-
-
-
         }
     }
 }
