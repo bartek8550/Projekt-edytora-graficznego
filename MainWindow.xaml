@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_edytora_graficznego"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="100">
+        Title="MainWindow" Height="450" Width="200">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Menu MaxHeight="25" Background="#FFA9D1F4">
@@ -71,6 +71,14 @@
                         </MenuItem>
                         <MenuItem x:Name="OperacjePunktoweDwuargumentowe" Header="Operacje punktowe dwuargumentowe" Click="OperacjePunktoweDwuargumentowe_Click"/>
                         <MenuItem x:Name="Filtracja1i2Etap" Header="Filtracja jedno i dwu - etapowa" Click="Filtracja1i2Etap_Click"/>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <Menu MaxHeight="25" Background="#FFA9D1F4">
+                <MenuItem Header="Lab3">
+                    <MenuItem Header="Obrazy szarocieniowe">
+                        <MenuItem x:Name="OperacjeMorfologiczne" Header="Operacje morfologiczne" Click="Operacje_morfologiczne_Click"></MenuItem>
+                        <MenuItem x:Name="Szkieletyzacja" Header="Szkieletyzacja" Click="Szkieletyzacja_Click"></MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>

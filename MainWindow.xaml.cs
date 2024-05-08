@@ -814,6 +814,32 @@ namespace Projekt_edytora_graficznego
         }
         #endregion lab2
 
+        #region lab3
+
+        private void Operacje_morfologiczne_Click(object sender, RoutedEventArgs e) {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            OperacjeMorfologiczne om = new OperacjeMorfologiczne();
+            if (om.ShowDialog() == true) {
+                Mat kernel = CvInvoke.GetStructuringElement(om.elementShape, new System.Drawing.Size(3,3), new Point(-1,-1));
+                CvInvoke.MorphologyEx(image, image, om.morphOp, kernel, new Point(-1, -1), 1, om.bt, new MCvScalar());
+                LastImage.UpdateImageAndHistogram(image);
+            }
+
+        }
+
+        private void Szkieletyzacja_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        #endregion lab3
 
         #endregion Clicki
 
@@ -932,10 +958,16 @@ namespace Projekt_edytora_graficznego
 
 
 
+
         #endregion lab2
 
-        #endregion
+        #region lab3
 
+
+
+        #endregion lab 3
+
+        #endregion
     }
 
 }
