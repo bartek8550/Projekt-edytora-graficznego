@@ -27,6 +27,7 @@ using Emgu.CV.Reg;
 using static System.Formats.Asn1.AsnWriter;
 using Emgu.CV.Dnn;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace Projekt_edytora_graficznego
 {
@@ -836,11 +837,143 @@ namespace Projekt_edytora_graficznego
 
         private void Szkieletyzacja_Click(object sender, RoutedEventArgs e)
         {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            Mat skel = new Mat(image.Size, DepthType.Cv8U, 1);
+            Mat imCopy = image.Clone();
+
+            // Utworzenie kernela
+            Mat element = CvInvoke.GetStructuringElement(ElementShape.Cross, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
+
+            // Pętla obejmująca kroki 2-4
+            while (true)
+            {
+                // Krok 2: Otwarcie morfologiczne
+                Mat imOpen = new Mat();
+                CvInvoke.MorphologyEx(imCopy, imOpen, MorphOp.Open, element, new System.Drawing.Point(1, 1), 1, BorderType.Default, new MCvScalar());
+
+                // Krok 3: Odjęcie powyższego wyniku od obrazu oryginalnego
+                Mat imTemp = new Mat();
+                CvInvoke.Subtract(imCopy, imOpen, imTemp);
+
+                // Krok 4: Erozja morfologiczna
+                Mat imEroded = new Mat();
+                CvInvoke.Erode(imCopy, imEroded, element, new System.Drawing.Point(1, 1), 1, BorderType.Default, new MCvScalar());
+
+                // Aktualizacja szkieletu
+                CvInvoke.BitwiseOr(skel, imTemp, skel);
+
+                // Aktualizacja obrazu przetwarzanego
+                imCopy = imEroded.Clone();
+
+                // Sprawdzenie warunku zakończenia pętli
+                if (CvInvoke.CountNonZero(imCopy) == 0)
+                    break;
+            }
+
+            LastImage.UpdateImageAndHistogram(skel);
+        }
+
+        private void PiramidkowanieUp_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            CvInvoke.PyrUp(image, image);
+            LastImage.UpdateImageAndHistogram(image);
+
+        }
+
+        private void PiramidkowanieDown_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            CvInvoke.PyrDown(image, image);
+            LastImage.UpdateImageAndHistogram(image);
+        }
+
+        private void TransformataHugha_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            if (image.NumberOfChannels != 1)
+            {
+                MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
+                return;
+            }
+
+            Mat edge = new Mat();
+
+            // Wykrywanie krawędzi za pomocą operatora Canny
+            CvInvoke.Canny(image, edge, 50, 100, 3, false);
+
+            // Wykonywanie transformacji Hougha
+            LineSegment2D[] lines = CvInvoke.HoughLinesP(edge, 1, Math.PI / 180, 20, 30, 10); 
+
+            // Rysowanie linii na obrazie
+            foreach (LineSegment2D line in lines)
+            {
+                CvInvoke.Line(image, line.P1, line.P2, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);
+            }
+
+            LastImage.UpdateImageAndHistogram(image);
 
         }
 
         #endregion lab3
 
+        private void Zapisz_Click(object sender, RoutedEventArgs e)
+        {
+            Mat image = LastImage.MatImage;
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Bitmap (*.bmp)|*.bmp|JPEG (*.jpg)|*.jpg|JPEG (*.jpeg)|*.jpeg|PNG (*.png)|*.png|Wszystkie pliki (*.*)|*.*";
+            ImageFormat format = ImageFormat.Jpeg;
+            if (sfd.ShowDialog() == true)
+            {
+                try
+                {
+                    Bitmap bitmap = image.ToBitmap();
+                    format = sfd.FilterIndex switch
+                    {
+                        1 => ImageFormat.Bmp,
+                        2 => ImageFormat.Jpeg,
+                        3 => ImageFormat.Jpeg,
+                        4 => ImageFormat.Png,
+                        _ => throw new Exception("Nieobsługiwany format obrazu")
+                    };
+
+                    bitmap.Save(sfd.FileName, format);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Wystąpił błąd w czasie zapisywania obrazu");
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Nie wybrano żadnego obrazu");
+            }
+
+        }
         #endregion Clicki
 
         #region Metody
@@ -959,6 +1092,8 @@ namespace Projekt_edytora_graficznego
 
 
 
+
+
         #endregion lab2
 
         #region lab3
@@ -968,6 +1103,8 @@ namespace Projekt_edytora_graficznego
         #endregion lab 3
 
         #endregion
+
+       
     }
 
 }
