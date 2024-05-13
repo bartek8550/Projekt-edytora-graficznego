@@ -943,7 +943,6 @@ namespace Projekt_edytora_graficznego
             {
                 Mat image = inPainting.obraz.MatImage;
                 Mat mask = inPainting.maska.MatImage;
-                Mat image2 = new Mat();
                 CvInvoke.Inpaint(image, mask, image, 3, InpaintType.NS);
                 LastImage.UpdateImageAndHistogram(image);
             }
