@@ -1,0 +1,18 @@
+﻿<Window x:Class="Projekt_edytora_graficznego.InPainting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Projekt_edytora_graficznego"
+        mc:Ignorable="d"
+        Title="InPainting" Height="150" Width="500">
+    <Grid>
+        <Label Content="Obraz" HorizontalAlignment="Left" Margin="93,10,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cb1" HorizontalAlignment="Left" Margin="93,30,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0"/>
+
+        <Label Content="Maska" HorizontalAlignment="Right" Margin="0,10,93,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cb2" HorizontalAlignment="Right" Margin="0,30,93,0" VerticalAlignment="Top" Width="120" SelectedIndex="0"/>
+
+        <Button Content="Wykonaj" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+    </Grid>
+</Window>

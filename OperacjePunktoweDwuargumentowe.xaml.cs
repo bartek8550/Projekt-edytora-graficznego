@@ -75,8 +75,6 @@ namespace Projekt_edytora_graficznego
             else {
                 MessageBox.Show("Obrazy muszą mieć takie same rozmiary");
             }
-
-            
         }
 
         private void cb3_SelectionChanged(object sender, SelectionChangedEventArgs e)

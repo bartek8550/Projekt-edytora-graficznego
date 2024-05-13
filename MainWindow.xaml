@@ -90,7 +90,7 @@
             <Menu MaxHeight="25" Background="#FFA9D1F4">
                 <MenuItem Header="Lab4">
                     <MenuItem Header="Obrazy szarocieniowe">
-
+                        <MenuItem x:Name="InPainting" Header="InPainting" Click="InPainting_Click"></MenuItem>
                     </MenuItem>
                 </MenuItem>
             </Menu>

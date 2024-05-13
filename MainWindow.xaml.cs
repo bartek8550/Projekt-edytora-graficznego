@@ -848,31 +848,26 @@ namespace Projekt_edytora_graficznego
             Mat skel = new Mat(image.Size, DepthType.Cv8U, 1);
             Mat imCopy = image.Clone();
 
-            // Utworzenie kernela
+
             Mat element = CvInvoke.GetStructuringElement(ElementShape.Cross, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
 
-            // Pętla obejmująca kroki 2-4
+
             while (true)
             {
-                // Krok 2: Otwarcie morfologiczne
+
                 Mat imOpen = new Mat();
                 CvInvoke.MorphologyEx(imCopy, imOpen, MorphOp.Open, element, new System.Drawing.Point(1, 1), 1, BorderType.Default, new MCvScalar());
 
-                // Krok 3: Odjęcie powyższego wyniku od obrazu oryginalnego
                 Mat imTemp = new Mat();
                 CvInvoke.Subtract(imCopy, imOpen, imTemp);
 
-                // Krok 4: Erozja morfologiczna
                 Mat imEroded = new Mat();
                 CvInvoke.Erode(imCopy, imEroded, element, new System.Drawing.Point(1, 1), 1, BorderType.Default, new MCvScalar());
 
-                // Aktualizacja szkieletu
                 CvInvoke.BitwiseOr(skel, imTemp, skel);
 
-                // Aktualizacja obrazu przetwarzanego
                 imCopy = imEroded.Clone();
 
-                // Sprawdzenie warunku zakończenia pętli
                 if (CvInvoke.CountNonZero(imCopy) == 0)
                     break;
             }
@@ -940,7 +935,20 @@ namespace Projekt_edytora_graficznego
         #endregion lab3
 
         #region lab 4
-
+        private void InPainting_Click(object sender, RoutedEventArgs e)
+        {
+            
+            InPainting inPainting = new InPainting(imageWindows);
+            if (inPainting.ShowDialog() == true) 
+            {
+                Mat image = inPainting.obraz.MatImage;
+                Mat mask = inPainting.maska.MatImage;
+                Mat image2 = new Mat();
+                CvInvoke.Inpaint(image, mask, image, 3, InpaintType.NS);
+                LastImage.UpdateImageAndHistogram(image);
+            }
+                
+        }
 
 
         #endregion lab4 
@@ -1100,6 +1108,7 @@ namespace Projekt_edytora_graficznego
 
 
 
+
         #endregion lab2
 
         #region lab4
@@ -1110,7 +1119,7 @@ namespace Projekt_edytora_graficznego
 
         #endregion
 
-       
+        
     }
 
 }
