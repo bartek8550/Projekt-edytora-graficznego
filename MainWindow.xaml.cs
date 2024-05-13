@@ -832,7 +832,7 @@ namespace Projekt_edytora_graficznego
                 CvInvoke.MorphologyEx(image, image, om.morphOp, kernel, new Point(-1, -1), 1, om.bt, new MCvScalar());
                 LastImage.UpdateImageAndHistogram(image);
             }
-
+            
         }
 
         private void Szkieletyzacja_Click(object sender, RoutedEventArgs e)
@@ -930,7 +930,7 @@ namespace Projekt_edytora_graficznego
             // Rysowanie linii na obrazie
             foreach (LineSegment2D line in lines)
             {
-                CvInvoke.Line(image, line.P1, line.P2, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);
+                CvInvoke.Line(image, line.P1, line.P2, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);               
             }
 
             LastImage.UpdateImageAndHistogram(image);
@@ -938,6 +938,10 @@ namespace Projekt_edytora_graficznego
         }
 
         #endregion lab3
+
+        #region lab 4
+
+        #endregion lab4 
 
         private void Zapisz_Click(object sender, RoutedEventArgs e)
         {
