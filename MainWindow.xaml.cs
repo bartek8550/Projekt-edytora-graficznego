@@ -941,6 +941,8 @@ namespace Projekt_edytora_graficznego
 
         #region lab 4
 
+
+
         #endregion lab4 
 
         private void Zapisz_Click(object sender, RoutedEventArgs e)
@@ -1100,11 +1102,11 @@ namespace Projekt_edytora_graficznego
 
         #endregion lab2
 
-        #region lab3
+        #region lab4
 
 
 
-        #endregion lab 3
+        #endregion lab 4
 
         #endregion
 

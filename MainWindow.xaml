@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projekt_edytora_graficznego"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="200">
+        Title="MainWindow" Height="450" Width="300">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Top">
             <Menu MaxHeight="25" Background="#FFA9D1F4">
@@ -67,7 +67,7 @@
                                 <MenuItem x:Name="_7x7Reflect" Header="reflect" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 reflect"/>
                                 <MenuItem x:Name="_7x7Replicate" Header="replicate" Click="FiltracjaMedianowa_Click" CommandParameter="7x7 replicate"/>
                             </MenuItem>
-                            
+
                         </MenuItem>
                         <MenuItem x:Name="OperacjePunktoweDwuargumentowe" Header="Operacje punktowe dwuargumentowe" Click="OperacjePunktoweDwuargumentowe_Click"/>
                         <MenuItem x:Name="Filtracja1i2Etap" Header="Filtracja jedno i dwu - etapowa" Click="Filtracja1i2Etap_Click"/>
@@ -88,8 +88,22 @@
                 </MenuItem>
             </Menu>
             <Menu MaxHeight="25" Background="#FFA9D1F4">
+                <MenuItem Header="Lab4">
+                    <MenuItem Header="Obrazy szarocieniowe">
+
+                    </MenuItem>
+                </MenuItem>
+            </Menu>
+            <Menu MaxHeight="25" Background="#FFA9D1F4">
                 <MenuItem Header="Zapisz" Click="Zapisz_Click"></MenuItem>
             </Menu>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10">
+            <TextBlock Text="Aplikacja zbiorcza z ćwiczeń laboratoryjnych" TextWrapping="Wrap" FontWeight="Bold" FontSize="14"/>
+            <TextBlock Text="Autor: Bartosz Kowalczyk" TextWrapping="Wrap" Margin="0,20,0,0"/>
+            <TextBlock Text="Prowadzący: dr inż. Łukasz Roszkowiak" TextWrapping="Wrap" Margin="0,2,0,0"/>
+            <TextBlock Text="Algorytmy Przetwarzania Obrazów 2024" TextWrapping="Wrap" Margin="0,2,0,0"/>
+            <TextBlock Text="WIT grupa ID: ID06IO1" TextWrapping="Wrap" Margin="0,2,0,0"/>
         </StackPanel>
     </DockPanel>
 </Window>
