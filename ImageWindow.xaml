@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="ImageWindow" Height="450" Width="800">
     <Grid>
-        <Image x:Name="Image" Stretch="Uniform"></Image>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Menu Grid.Row="0" MaxHeight="25" Background="#FFA9D1F4" VerticalAlignment="Top" MaxWidth="80" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <MenuItem Header="Linia Profilu" Click="MenuItem_Click"></MenuItem>
+        </Menu>
+
+        <Image Grid.Row="1" x:Name="Image" Stretch="Uniform"></Image>
     </Grid>
 </Window>

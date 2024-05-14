@@ -848,9 +848,7 @@ namespace Projekt_edytora_graficznego
             Mat skel = new Mat(image.Size, DepthType.Cv8U, 1);
             Mat imCopy = image.Clone();
 
-
             Mat element = CvInvoke.GetStructuringElement(ElementShape.Cross, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-
 
             while (true)
             {
@@ -870,6 +868,7 @@ namespace Projekt_edytora_graficznego
 
                 if (CvInvoke.CountNonZero(imCopy) == 0)
                     break;
+                
             }
 
             LastImage.UpdateImageAndHistogram(skel);
@@ -887,7 +886,7 @@ namespace Projekt_edytora_graficznego
 
             CvInvoke.PyrUp(image, image);
             LastImage.UpdateImageAndHistogram(image);
-
+            
         }
 
         private void PiramidkowanieDown_Click(object sender, RoutedEventArgs e)
@@ -931,6 +930,8 @@ namespace Projekt_edytora_graficznego
             LastImage.UpdateImageAndHistogram(image);
 
         }
+
+
 
         #endregion lab3
 

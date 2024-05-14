@@ -39,17 +39,41 @@ namespace Projekt_edytora_graficznego
             {
                 values.Add(value);
             }
-            this.Chart.Background = new SolidColorBrush(Colors.Black);
+            this.Chart.Background = new SolidColorBrush(Colors.White);
             var columnSeries = new ColumnSeries
             {
                 ColumnPadding = 0,
                 Values = values,
-                Fill = new SolidColorBrush(Colors.White),
+                Fill = new SolidColorBrush(Colors.Green),
                 
             };
             var SeriesCollection = new SeriesCollection
             {
                 columnSeries
+            };
+            Chart.Series = SeriesCollection;
+        }
+
+        public void ProfileLine(List<int> pointsValues)
+        {
+            var values = new ChartValues<int>();
+            foreach (var value in pointsValues)
+            {
+                values.Add(value);
+            }
+            this.Chart.Background = new SolidColorBrush(Colors.White);
+            var lineSeries = new LineSeries
+            {
+                PointGeometrySize = 2,
+                Values = values,
+                Fill = null,
+                LineSmoothness = 1,
+                Stroke = new SolidColorBrush(Colors.Green),
+
+            };
+            var SeriesCollection = new SeriesCollection
+            {
+                lineSeries
             };
             Chart.Series = SeriesCollection;
         }
