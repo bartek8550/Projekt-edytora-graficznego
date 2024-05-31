@@ -28,6 +28,8 @@ using static System.Formats.Asn1.AsnWriter;
 using Emgu.CV.Dnn;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
+using Emgu.CV.Util;
+using System.Numerics;
 
 namespace Projekt_edytora_graficznego
 {
@@ -953,6 +955,67 @@ namespace Projekt_edytora_graficznego
 
         #endregion lab4 
 
+        #region Projekt wykładowy
+        private void OtoczkaWypukla_Click(object sender, RoutedEventArgs e)
+        {
+            //Pobranie ostatnio klikniętego obrazka
+            Mat image = LastImage.MatImage;
+
+            //Zmienne potrzebne do zblurowania zdjecia i wykonania tresholdu
+            Mat blur_image = new Mat();
+            Mat threshold_output = new Mat();
+            
+            //Aplikowanie blura na obrazie szarocieniowym
+            CvInvoke.GaussianBlur(image, blur_image, new System.Drawing.Size(3, 3), 0);
+            //Aplikowanie binarnego tresholda na zblurowanym obrazie
+            CvInvoke.Threshold(blur_image, threshold_output, 200, 255, ThresholdType.Binary);
+            //Lista do przechowania konturów
+            using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
+            using (Mat hierarchy = new Mat())
+            {
+                //Znajdowanie konturów
+                CvInvoke.FindContours(threshold_output, contours, hierarchy, RetrType.Tree, ChainApproxMethod.ChainApproxSimple);
+
+                //Lista do znajdywania otoczek wypukłych
+                List<VectorOfPoint> hull = new List<VectorOfPoint>(contours.Size);
+
+                for (int i = 0; i < contours.Size; i++)
+                {
+
+                    using (VectorOfPoint contour = contours[i])
+                    {
+                        VectorOfPoint hullPoints = new VectorOfPoint();
+                        CvInvoke.ConvexHull(contour, hullPoints, false);
+                        hull.Add(hullPoints);
+                    }
+                }
+
+                //Tworzenie pustego obrazu w celu rysowania po nim
+                Mat drawing = new Mat(threshold_output.Size, DepthType.Cv8U, 3);
+                drawing.SetTo(new MCvScalar(0, 0, 0));
+
+                // Rysowanie konturów i otoczek wypukłych
+                for (int i = 0; i < contours.Size; i++)
+                {
+                    // Zielony kolor dla konturów
+                    MCvScalar colorContours = new MCvScalar(0, 255, 0);
+                    // Niebieski kolor dla otoczek wypukłych
+                    MCvScalar colorHull = new MCvScalar(255, 0, 0);
+
+                    // Rysowanie konturów
+                    CvInvoke.DrawContours(drawing, contours, i, colorContours, 1, LineType.EightConnected, hierarchy, 0, new System.Drawing.Point());
+
+                    // Rysowanie otoczek wypukłych
+                    CvInvoke.DrawContours(drawing, new VectorOfVectorOfPoint(hull[i]), -1, colorHull, 1, LineType.EightConnected);
+                }
+                Otworz(drawing);
+
+            }
+            
+        }
+
+        #endregion
+
         private void Zapisz_Click(object sender, RoutedEventArgs e)
         {
             Mat image = LastImage.MatImage;
@@ -1099,6 +1162,7 @@ namespace Projekt_edytora_graficznego
             }
             return image2.Mat;
         }
+
 
 
 

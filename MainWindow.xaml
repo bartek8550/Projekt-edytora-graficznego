@@ -97,6 +97,11 @@
             <Menu MaxHeight="25" Background="#FFA9D1F4">
                 <MenuItem Header="Zapisz" Click="Zapisz_Click"></MenuItem>
             </Menu>
+            <Menu MaxHeight="25" Background="#FFA9D1F4">
+                <MenuItem Header="Wykład">
+                    <MenuItem Header="Otoczka wypukła" Click="OtoczkaWypukla_Click"></MenuItem>
+                </MenuItem>
+            </Menu>
         </StackPanel>
         <StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10">
             <TextBlock Text="Aplikacja zbiorcza z ćwiczeń laboratoryjnych" TextWrapping="Wrap" FontWeight="Bold" FontSize="14"/>
