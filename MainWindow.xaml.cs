@@ -64,7 +64,7 @@ namespace Projekt_edytora_graficznego
                     OpenGrayScale(path);
                 }
             }
-            else 
+            else
             {
                 MessageBox.Show("Nie wybrano żadnego obrazu");
             }
@@ -105,7 +105,8 @@ namespace Projekt_edytora_graficznego
                 }
                 LastImage.ShowHis();
             }
-            else {
+            else
+            {
                 MessageBox.Show("Nie wybrano obrazka");
             }
         }
@@ -117,7 +118,7 @@ namespace Projekt_edytora_graficznego
                 MessageBox.Show("Obraz jest w odcieniach szarości, możesz wykonać operacje jedynie dla obrazu kolorowego. Po co zmieniać obraz czarnobiały na czarnobiały ;)");
                 return;
             }
-            else 
+            else
             {
                 Mat grayMat = LastImage.MatImage.ToImage<Gray, byte>().Mat;
                 LastImage.MatImage = grayMat;
@@ -172,7 +173,7 @@ namespace Projekt_edytora_graficznego
                 LastImage.MatImage = imageHsv;
                 LastImage.DisplayImage();
             }
-            else 
+            else
             {
                 MessageBox.Show("Wybierz obraz");
             }
@@ -200,7 +201,7 @@ namespace Projekt_edytora_graficznego
         private void HistogramRozciaganie_Click(object sender, RoutedEventArgs e)
         {
             Mat image = LastImage.MatImage;
-            
+
             if (image.NumberOfChannels != 1)
             {
                 MessageBox.Show("Operacja wymaga obrazu szarocieniowego.");
@@ -216,14 +217,16 @@ namespace Projekt_edytora_graficznego
                 for (int x = 0; x < grayImage.Width; ++x)
                 {
                     byte pixel = grayImage.Data[y, x, 0];
-                    if(pixel < min) min = pixel;
-                    if(pixel > max) max = pixel;
+                    if (pixel < min) min = pixel;
+                    if (pixel > max) max = pixel;
                 }
             }
 
             // Wykonywanie rozciągania histogramu
-            for (int y = 0; y < grayImage.Height; ++y) {
-                for (int x = 0; x < grayImage.Width; ++x){
+            for (int y = 0; y < grayImage.Height; ++y)
+            {
+                for (int x = 0; x < grayImage.Width; ++x)
+                {
                     byte pixel = grayImage.Data[y, x, 0];
                     if (pixel < min)
                     {
@@ -239,8 +242,8 @@ namespace Projekt_edytora_graficznego
                     }
                 }
             }
-                
-            Mat stretchedImage = grayImage.Mat;          
+
+            Mat stretchedImage = grayImage.Mat;
             LastImage.UpdateImageAndHistogram(stretchedImage);
         }
 
@@ -255,9 +258,10 @@ namespace Projekt_edytora_graficznego
             float skala = 255.0f / pixels;
 
             byte[] tab = new byte[256];
-            for (int i = 0; i < 256; ++i) {
+            for (int i = 0; i < 256; ++i)
+            {
                 sumask += histogram[i];
-                tab[i] = (byte) (sumask * skala);
+                tab[i] = (byte)(sumask * skala);
             }
 
             Image<Gray, byte> image2 = image.ToImage<Gray, byte>();
@@ -274,7 +278,7 @@ namespace Projekt_edytora_graficznego
 
         }
 
-        private void Negacja_Click(object sender, RoutedEventArgs e) 
+        private void Negacja_Click(object sender, RoutedEventArgs e)
         {
             Mat image = LastImage.MatImage;
             if (image.NumberOfChannels != 1)
@@ -309,7 +313,8 @@ namespace Projekt_edytora_graficznego
             }
 
             SelekcjaRoz selekcjaRoz = new SelekcjaRoz();
-            if(selekcjaRoz.ShowDialog() == true) {
+            if (selekcjaRoz.ShowDialog() == true)
+            {
                 Mat rozciagnieteSel = RozciaganieSel(selekcjaRoz.p1Value, selekcjaRoz.p2Value, selekcjaRoz.q3Value, selekcjaRoz.q4Value);
                 LastImage.UpdateImageAndHistogram(rozciagnieteSel);
             }
@@ -346,7 +351,8 @@ namespace Projekt_edytora_graficznego
             }
 
             MenuItem? menuItem = sender as MenuItem;
-            if (menuItem != null) { 
+            if (menuItem != null)
+            {
                 string? cp = menuItem.CommandParameter as string;
                 BorderType bt = cp switch
                 {
@@ -385,13 +391,14 @@ namespace Projekt_edytora_graficznego
                 };
 
                 Mat mat = new Mat();
-                CvInvoke.GaussianBlur(image, mat, new System.Drawing.Size(3,3), 1.5, 0, bt);
+                CvInvoke.GaussianBlur(image, mat, new System.Drawing.Size(3, 3), 1.5, 0, bt);
                 LastImage.UpdateImageAndHistogram(mat);
             }
 
         }
 
-        private void Sobel_Click(object sender, RoutedEventArgs e) {
+        private void Sobel_Click(object sender, RoutedEventArgs e)
+        {
             Mat image = LastImage.MatImage;
             if (image.NumberOfChannels != 1)
             {
@@ -401,19 +408,21 @@ namespace Projekt_edytora_graficznego
 
             DetekcjaKrawedzi det = new DetekcjaKrawedzi("Sobel");
 
-            if (det.ShowDialog() == true) {
+            if (det.ShowDialog() == true)
+            {
                 Mat mat1 = new Mat(new System.Drawing.Size(image.Width, image.Height), DepthType.Cv64F, 1);
                 if (det.SobelDirection == "X")
                 {
                     CvInvoke.Sobel(image, mat1, DepthType.Cv64F, 1, 0, 3, 1, 0, det.bt);
                 }
-                else {
-                    CvInvoke.Sobel(image, mat1, DepthType.Cv64F, 0, 1, 3, 1, 0, det.bt);  
+                else
+                {
+                    CvInvoke.Sobel(image, mat1, DepthType.Cv64F, 0, 1, 3, 1, 0, det.bt);
                 }
                 Mat mat2 = new Mat();
                 CvInvoke.ConvertScaleAbs(mat1, mat2, 1.0, 0);
                 LastImage.UpdateImageAndHistogram(mat2);
-            }  
+            }
         }
 
         private void Laplacian_Click(object sender, RoutedEventArgs e)
@@ -435,7 +444,8 @@ namespace Projekt_edytora_graficznego
                 CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 0);
                 LastImage.UpdateImageAndHistogram(mat1);
             }
-            else {
+            else
+            {
                 MessageBox.Show("Wystąpił błąd");
             }
 
@@ -455,7 +465,7 @@ namespace Projekt_edytora_graficznego
             if (det.ShowDialog() == true)
             {
                 Mat mat = new Mat();
-                CvInvoke.CopyMakeBorder(image, mat, 1,1,1,1, det.bt);
+                CvInvoke.CopyMakeBorder(image, mat, 1, 1, 1, 1, det.bt);
                 CvInvoke.Canny(mat, mat, (double)det.TresholdValue1, (double)det.TresholdValue2);
                 Mat mat1 = new Mat();
                 CvInvoke.ConvertScaleAbs(mat, mat1, 1.0, 0);
@@ -495,7 +505,7 @@ namespace Projekt_edytora_graficznego
                             LastImage.UpdateImageAndHistogram(mat.Mat);
                             break;
                         }
-                    case "NE": 
+                    case "NE":
                         {
                             Matrix<double> matrix = new Matrix<double>(3, 3)
                             {
@@ -509,7 +519,7 @@ namespace Projekt_edytora_graficznego
                             LastImage.UpdateImageAndHistogram(mat.Mat);
                             break;
                         }
-                    case "E": 
+                    case "E":
                         {
                             Matrix<double> matrix = new Matrix<double>(3, 3)
                             {
@@ -663,7 +673,8 @@ namespace Projekt_edytora_graficznego
                 return;
             }
             OperacjaLiniowa ol = new OperacjaLiniowa();
-            if (ol.ShowDialog() == true) {
+            if (ol.ShowDialog() == true)
+            {
                 Matrix<double> matrix = new Matrix<double>(3, 3)
                 {
                     Data = new double[3, 3] {
@@ -677,7 +688,7 @@ namespace Projekt_edytora_graficznego
             }
 
         }
-        private void FiltracjaMedianowa_Click(object sender, RoutedEventArgs e) 
+        private void FiltracjaMedianowa_Click(object sender, RoutedEventArgs e)
         {
             Mat image = LastImage.MatImage;
             if (image.NumberOfChannels != 1)
@@ -718,7 +729,8 @@ namespace Projekt_edytora_graficznego
                     CvInvoke.MedianBlur(mat, mat, 5);
                     LastImage.UpdateImageAndHistogram(mat);
                 }
-                else if (tab[0] == "7x7") {
+                else if (tab[0] == "7x7")
+                {
                     BorderType bt = tab[1] switch
                     {
                         "isolated" => BorderType.Isolated,
@@ -732,7 +744,7 @@ namespace Projekt_edytora_graficznego
                     LastImage.UpdateImageAndHistogram(mat);
                 }
 
-                
+
             }
 
         }
@@ -750,9 +762,9 @@ namespace Projekt_edytora_graficznego
             if (opd.ShowDialog() == true)
             {
                 Mat mat = new Mat();
-                switch (opd.operacja) 
+                switch (opd.operacja)
                 {
-                    case 0:                      
+                    case 0:
                         CvInvoke.Add(imageWindows[opd.ind1].MatImage, imageWindows[opd.ind2].MatImage, mat);
                         Otworz(mat);
                         break;
@@ -781,9 +793,10 @@ namespace Projekt_edytora_graficznego
                         Otworz(mat);
                         break;
                 }
-                
+
             }
-            else {
+            else
+            {
                 MessageBox.Show("Coś poszło nie tak");
             }
 
@@ -813,13 +826,14 @@ namespace Projekt_edytora_graficznego
                     LastImage.UpdateImageAndHistogram(image);
                 }
             }
-            
+
         }
         #endregion lab2
 
         #region lab3
 
-        private void Operacje_morfologiczne_Click(object sender, RoutedEventArgs e) {
+        private void Operacje_morfologiczne_Click(object sender, RoutedEventArgs e)
+        {
             Mat image = LastImage.MatImage;
 
             if (image.NumberOfChannels != 1)
@@ -829,12 +843,13 @@ namespace Projekt_edytora_graficznego
             }
 
             OperacjeMorfologiczne om = new OperacjeMorfologiczne();
-            if (om.ShowDialog() == true) {
-                Mat kernel = CvInvoke.GetStructuringElement(om.elementShape, new System.Drawing.Size(3,3), new Point(-1,-1));
+            if (om.ShowDialog() == true)
+            {
+                Mat kernel = CvInvoke.GetStructuringElement(om.elementShape, new System.Drawing.Size(3, 3), new Point(-1, -1));
                 CvInvoke.MorphologyEx(image, image, om.morphOp, kernel, new Point(-1, -1), 1, om.bt, new MCvScalar());
                 LastImage.UpdateImageAndHistogram(image);
             }
-            
+
         }
 
         private void Szkieletyzacja_Click(object sender, RoutedEventArgs e)
@@ -870,7 +885,7 @@ namespace Projekt_edytora_graficznego
 
                 if (CvInvoke.CountNonZero(imCopy) == 0)
                     break;
-                
+
             }
 
             LastImage.UpdateImageAndHistogram(skel);
@@ -888,7 +903,7 @@ namespace Projekt_edytora_graficznego
 
             CvInvoke.PyrUp(image, image);
             LastImage.UpdateImageAndHistogram(image);
-            
+
         }
 
         private void PiramidkowanieDown_Click(object sender, RoutedEventArgs e)
@@ -921,12 +936,12 @@ namespace Projekt_edytora_graficznego
             CvInvoke.Canny(image, edge, 50, 100, 3, false);
 
             // Wykonywanie transformacji Hougha
-            LineSegment2D[] lines = CvInvoke.HoughLinesP(edge, 1, Math.PI / 180, 20, 30, 10); 
+            LineSegment2D[] lines = CvInvoke.HoughLinesP(edge, 1, Math.PI / 180, 20, 30, 10);
 
             // Rysowanie linii na obrazie
             foreach (LineSegment2D line in lines)
             {
-                CvInvoke.Line(image, line.P1, line.P2, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);               
+                CvInvoke.Line(image, line.P1, line.P2, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);
             }
 
             LastImage.UpdateImageAndHistogram(image);
@@ -940,16 +955,16 @@ namespace Projekt_edytora_graficznego
         #region lab 4
         private void InPainting_Click(object sender, RoutedEventArgs e)
         {
-            
+
             InPainting inPainting = new InPainting(imageWindows);
-            if (inPainting.ShowDialog() == true) 
+            if (inPainting.ShowDialog() == true)
             {
                 Mat image = inPainting.obraz.MatImage;
                 Mat mask = inPainting.maska.MatImage;
                 CvInvoke.Inpaint(image, mask, image, 3, InpaintType.NS);
                 LastImage.UpdateImageAndHistogram(image);
             }
-                
+
         }
 
 
@@ -961,14 +976,15 @@ namespace Projekt_edytora_graficznego
             //Pobranie ostatnio klikniętego obrazka
             Mat image = LastImage.MatImage;
 
-            //Zmienne potrzebne do zblurowania zdjecia i wykonania tresholdu
+            //Zmienne potrzebne do zblurowania zdjecia i wykonania thresholdu
             Mat blur_image = new Mat();
             Mat threshold_output = new Mat();
-            
+
             //Aplikowanie blura na obrazie szarocieniowym
             CvInvoke.GaussianBlur(image, blur_image, new System.Drawing.Size(3, 3), 0);
-            //Aplikowanie binarnego tresholda na zblurowanym obrazie
+            //Aplikowanie thresholda na zblurowanym obrazie w celu uzyskania binarnego obrazu
             CvInvoke.Threshold(blur_image, threshold_output, 200, 255, ThresholdType.Binary);
+
             //Lista do przechowania konturów
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             using (Mat hierarchy = new Mat())
@@ -981,7 +997,6 @@ namespace Projekt_edytora_graficznego
 
                 for (int i = 0; i < contours.Size; i++)
                 {
-
                     using (VectorOfPoint contour = contours[i])
                     {
                         VectorOfPoint hullPoints = new VectorOfPoint();
@@ -1011,8 +1026,83 @@ namespace Projekt_edytora_graficznego
                 Otworz(drawing);
 
             }
-            
+
         }
+        private void OtoczkaWypukla2_Click(object sender, RoutedEventArgs e)
+        {
+            //Pobranie ostatnio klikniętego obrazka
+            Mat image = LastImage.MatImage;
+
+            //Zmienne potrzebne do zblurowania zdjecia i wykonania thresholdu
+            Mat blur_image = new Mat();
+            Mat threshold_output = new Mat();
+
+            //Aplikowanie blura na obrazie szarocieniowym
+            CvInvoke.GaussianBlur(image, blur_image, new System.Drawing.Size(3, 3), 0);
+            //Aplikowanie thresholda na zblurowanym obrazie w celu uzyskania binarnego obrazu
+            CvInvoke.Threshold(blur_image, threshold_output, 200, 255, ThresholdType.Binary);
+
+            //Lista do przechowania konturów
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+            Mat hierarchy = new Mat();
+            
+            //Znajdowanie konturów
+            CvInvoke.FindContours(threshold_output, contours, hierarchy, RetrType.Tree, ChainApproxMethod.ChainApproxSimple);
+
+            VectorOfVectorOfPoint filteredContours = new VectorOfVectorOfPoint();
+            for (int i = 0; i < contours.Size; i++)
+            {
+                using (VectorOfPoint contour = contours[i])
+                {
+                    if (contour.Size > 1)
+                    {
+                        filteredContours.Push(contour);
+                    }
+                }
+            }
+
+
+            //Lista do znajdywania otoczek wypukłych
+            List<VectorOfPoint> hull = new List<VectorOfPoint>(contours.Size);
+
+            for (int i = 0; i < filteredContours.Size; i++)
+            {
+                using (VectorOfPoint contour = filteredContours[i])
+                {
+                    List<Point> contourPoints = new List<Point>();
+                    for (int j = 0; j < contour.Size; j++)
+                    {
+                        contourPoints.Add(contour[j]);
+                    }
+
+                    List<Point> hullPoints = ConvexHullAlgorithm.GrahamScan(contourPoints);
+                    VectorOfPoint vectorHullPoints = new VectorOfPoint(hullPoints.ToArray());
+                    hull.Add(vectorHullPoints);
+                }
+            }
+
+            //Tworzenie pustego obrazu w celu rysowania po nim
+            Mat drawing = new Mat(threshold_output.Size, DepthType.Cv8U, 3);
+            drawing.SetTo(new MCvScalar(0, 0, 0));
+
+            // Rysowanie konturów i otoczek wypukłych
+            for (int i = 0; i < filteredContours.Size; i++)
+            {
+                // Zielony kolor dla konturów
+                MCvScalar colorContours = new MCvScalar(0, 255, 0);
+                // Niebieski kolor dla otoczek wypukłych
+                MCvScalar colorHull = new MCvScalar(255, 0, 0);
+
+                // Rysowanie konturów
+                CvInvoke.DrawContours(drawing, filteredContours, i, colorContours, 1, LineType.EightConnected, hierarchy, 0, new System.Drawing.Point());
+
+                // Rysowanie otoczek wypukłych
+                CvInvoke.DrawContours(drawing, new VectorOfVectorOfPoint(hull[i]), -1, colorHull, 1, LineType.EightConnected);
+            }
+            Otworz(drawing);
+
+        }
+
 
         #endregion
 

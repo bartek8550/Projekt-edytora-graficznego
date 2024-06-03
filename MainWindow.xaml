@@ -100,6 +100,7 @@
             <Menu MaxHeight="25" Background="#FFA9D1F4">
                 <MenuItem Header="Wykład">
                     <MenuItem Header="Otoczka wypukła" Click="OtoczkaWypukla_Click"></MenuItem>
+                    <MenuItem Header="Otoczka wypukła 2" Click="OtoczkaWypukla2_Click"></MenuItem>
                 </MenuItem>
             </Menu>
         </StackPanel>
