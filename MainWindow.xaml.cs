@@ -31,6 +31,7 @@ using System.Security.Cryptography;
 using Emgu.CV.Util;
 using System.Numerics;
 
+
 namespace Projekt_edytora_graficznego
 {
     /// <summary>
@@ -977,36 +978,43 @@ namespace Projekt_edytora_graficznego
             Mat image = LastImage.MatImage;
 
             //Zmienne potrzebne do zblurowania zdjecia i wykonania thresholdu
-            Mat blur_image = new Mat();
-            Mat threshold_output = new Mat();
+            Mat imageBlur = new Mat();
+            Mat thresholdImage = new Mat();
 
             //Aplikowanie blura na obrazie szarocieniowym
-            CvInvoke.GaussianBlur(image, blur_image, new System.Drawing.Size(3, 3), 0);
+            CvInvoke.GaussianBlur(image, imageBlur, new System.Drawing.Size(3, 3), 0);
             //Aplikowanie thresholda na zblurowanym obrazie w celu uzyskania binarnego obrazu
-            CvInvoke.Threshold(blur_image, threshold_output, 200, 255, ThresholdType.Binary);
+            CvInvoke.Threshold(imageBlur, thresholdImage, 200, 255, ThresholdType.Binary);
 
-            //Lista do przechowania konturów
+            //Lista do przechowania konturów oraz hierarchi
             using (VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint())
             using (Mat hierarchy = new Mat())
             {
                 //Znajdowanie konturów
-                CvInvoke.FindContours(threshold_output, contours, hierarchy, RetrType.Tree, ChainApproxMethod.ChainApproxSimple);
+                CvInvoke.FindContours(thresholdImage, contours, hierarchy, RetrType.Tree, ChainApproxMethod.ChainApproxSimple);
 
                 //Lista do znajdywania otoczek wypukłych
                 List<VectorOfPoint> hull = new List<VectorOfPoint>(contours.Size);
 
+                //Pętla przechodząca po wektorach konturów
                 for (int i = 0; i < contours.Size; i++)
                 {
+                    //Tworzenie tablicy wektorów dla pojedynczych wektórów na których następnie będzie wykonywana operacja
                     using (VectorOfPoint contour = contours[i])
                     {
+                        //Tworzenie wektora dla punktów otoczki
                         VectorOfPoint hullPoints = new VectorOfPoint();
+
+                        //Wykonanie metody ConvexHull dla danego wektora i wzrócenie w hullPoints otoczki 
                         CvInvoke.ConvexHull(contour, hullPoints, false);
+
+                        //Dodanie otoczki do listy otoczek
                         hull.Add(hullPoints);
                     }
                 }
 
                 //Tworzenie pustego obrazu w celu rysowania po nim
-                Mat drawing = new Mat(threshold_output.Size, DepthType.Cv8U, 3);
+                Mat drawing = new Mat(thresholdImage.Size, DepthType.Cv8U, 3);
                 drawing.SetTo(new MCvScalar(0, 0, 0));
 
                 // Rysowanie konturów i otoczek wypukłych
@@ -1042,7 +1050,7 @@ namespace Projekt_edytora_graficznego
             //Aplikowanie thresholda na zblurowanym obrazie w celu uzyskania binarnego obrazu
             CvInvoke.Threshold(blur_image, threshold_output, 200, 255, ThresholdType.Binary);
 
-            //Lista do przechowania konturów
+            //Wektor do przechowania konturów i obiekt Mat do przechowania hierarchii
             VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
             Mat hierarchy = new Mat();
             
@@ -1060,7 +1068,6 @@ namespace Projekt_edytora_graficznego
                     }
                 }
             }
-
 
             //Lista do znajdywania otoczek wypukłych
             List<VectorOfPoint> hull = new List<VectorOfPoint>(contours.Size);
@@ -1102,9 +1109,112 @@ namespace Projekt_edytora_graficznego
             Otworz(drawing);
 
         }
+        /*
+        private void OtoczkaWypukla3_Click(object sender, RoutedEventArgs e)
+        {
+            // Pobranie ostatnio klikniętego obrazka (już w odcieniach szarości)
+            Mat image = LastImage.MatImage;
+
+            // Threshold the image to binary
+            Mat binary = new Mat();
+            CvInvoke.Threshold(image, binary, 200, 255, ThresholdType.Binary);
+
+            // Inicjalizacja czterech tablic Xi0 = A
+            Mat[] Xi = new Mat[4];
+            for (int i = 0; i < 4; i++)
+            {
+                Xi[i] = binary.Clone();
+            }
+
+            // Definicja elementów strukturalnych
+            List<Emgu.CV.Matrix<double>> Bi = new List<Emgu.CV.Matrix<double>>();
+
+            Emgu.CV.Matrix<double> B1 = new Emgu.CV.Matrix<double>(3, 3)
+            {
+                Data = new double[3, 3] {
+                { 1, 0, 0 },
+                { 1, 0, 0 },
+                { 1, 0, 0 } }
+            };
+
+            Emgu.CV.Matrix<double> B2 = new Emgu.CV.Matrix<double>(3, 3)
+            {
+                Data = new double[3, 3] {
+                { 1, 1, 1 },
+                { 0, 0, 0 },
+                { 0, 0, 0 } }
+            };
+
+            Emgu.CV.Matrix<double> B3 = new Emgu.CV.Matrix<double>(3, 3)
+            {
+                Data = new double[3, 3] {
+                { 0, 0, 1 },
+                { 0, 0, 1 },
+                { 0, 0, 1 } }
+            };
+
+            Emgu.CV.Matrix<double> B4 = new Emgu.CV.Matrix<double>(3, 3)
+            {
+                Data = new double[3, 3] {
+                { 0, 0, 0 },
+                { 0, 0, 0 },
+                { 1, 1, 1 } }
+            };
+
+            Bi.Add(B1);
+            Bi.Add(B2);
+            Bi.Add(B3);
+            Bi.Add(B4);
+
+            
+
+
+            for (int i = 0; i < 4; i++) {
+                Mat previousConvexHull = new Mat();
+                Mat hm = new Mat();
+                while (true) {
+                    previousConvexHull = Xi[i].Clone();
+                    //HitOrMiss 
+                    CvInvoke.MorphologyEx(Xi[i], hm, MorphOp.HitMiss, Bi[i], new System.Drawing.Point(-1,-1), 1, BorderType.Constant, new MCvScalar(0));
+
+                    Mat newConvexHull = new Mat();
+                    CvInvoke.BitwiseOr(Xi[i], hm, newConvexHull);
+
+                    Mat difference = new Mat();
+                    CvInvoke.AbsDiff(previousConvexHull, Xi[i], difference);
+                    if (CvInvoke.CountNonZero(difference) == 0)
+                    {
+
+                        break;
+                    }
+                }
+                hm.Dispose();
+            }
+
+            // Unie wszystkich Xi, aby uzyskać ostateczny wynik
+            Mat finalConvexHull = new Mat(binary.Size, binary.Depth, binary.NumberOfChannels);
+            finalConvexHull.SetTo(new MCvScalar(0));
+            foreach (Mat mat in Xi)
+            {
+                CvInvoke.BitwiseOr(finalConvexHull, mat, finalConvexHull);
+            }
+
+            // Wyświetlenie wyniku
+            CvInvoke.Imshow("Convex Hull", finalConvexHull);
+
+
+        }
+        */
+
 
 
         #endregion
+
+        private void Informacja_Click(object sender, RoutedEventArgs e)
+        {
+            Informacja inf = new Informacja();
+            inf.Show();
+        }
 
         private void Zapisz_Click(object sender, RoutedEventArgs e)
         {
@@ -1164,7 +1274,7 @@ namespace Projekt_edytora_graficznego
             imageWindows.Add(imageWindow);
             imageWindow.Closing += (w, j) => imageWindows.Remove(imageWindow);
             imageWindow.Title = $"Obrazek {this.i}";
-            this.i += this.i + this.i * this.i;
+            this.i += this.i;
             imageWindow.Show();
         }
 
@@ -1252,6 +1362,7 @@ namespace Projekt_edytora_graficznego
             }
             return image2.Mat;
         }
+
 
 
 
